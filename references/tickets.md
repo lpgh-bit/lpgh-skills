@@ -148,4 +148,4 @@ Every skill uses these names. The configured tracker file gives the concrete com
 - Use the domain vocabulary from `CONTEXT.md`; flag ADR conflicts instead of silently overriding.
 - Never delete a ticket. Out of scope → `wontfix` with a one-line reason.
 - Never change another effort's tickets unless the user asked.
-- Write tickets in English.
+- Write ticket free text in the project language (`language.md`, default English); field names and values stay English.

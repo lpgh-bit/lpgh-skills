@@ -23,7 +23,7 @@ Ticket: <effort>#NN
 | `-` | something removed: deleted code, feature, file, dependency, route |
 | `~` | something changed: bug fix, refactor, optimisation, dependency update, rename, docs edit |
 
-- English, imperative, sentence case: `+ Add login button`, `~ Fix validation on signup`, `- Remove deprecated v1 route`.
+- Project language (default English, see `language.md`), imperative, sentence case: `+ Add login button`, `~ Fix validation on signup`, `- Remove deprecated v1 route`.
 - One prefix per commit. If a commit both adds and removes, split it; if it can't be split, use the prefix of the main intent (replacing X with Y → `~`).
 - `Ticket:` line only when the commit belongs to a ticket (`.tickets` is local, but the ref lets `review` find the spec).
 - No ticket types (`feat`, `fix`, …) and no scopes in the subject.

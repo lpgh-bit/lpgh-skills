@@ -2,6 +2,11 @@
 
 Read by `implement`, `tdd`, `review`, `milestone-review` and `/work` instead of guessing commands. Keep it current; `/init` can refresh it.
 
+## Language
+
+- Project language: English   <!-- default; see lpgh-skills references/language.md -->
+- Applies to: conversation, specs, tickets, reviews, reports, docs (DESIGN.md, CONTEXT.md, ADRs), commit messages. Not to code identifiers/comments (repo convention) or UI copy (product language).
+
 ## Stack
 
 - Languages / frameworks: <e.g. Java 21 + Spring Boot 3, Angular 18>
@@ -42,5 +47,5 @@ How a real user meets this product, used for user-level acceptance tests in `/mi
 ## Conventions
 
 - Branch naming: <e.g. feature/<effort-slug>>
-- Commit style: `+`/`-`/`~` prefixes, English, user as author, no AI attribution — see lpgh-skills `references/commits.md` (note project-specific deviations here)
+- Commit style: `+`/`-`/`~` prefixes, project language, user as author, no AI attribution — see lpgh-skills `references/commits.md` (note project-specific deviations here)
 - Coding standards docs: <paths, e.g. CONTRIBUTING.md>

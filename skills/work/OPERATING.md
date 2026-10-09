@@ -2,6 +2,7 @@
 
 These hold for the whole `/work` run and every subagent you brief (adapted from addyosmani/agent-skills).
 
+0. **Project language.** Communicate and write every artifact in the project language from `docs/agents/project.md` (default English) — see [`../../references/language.md`](../../references/language.md). Pass it on in every subagent brief.
 1. **Surface assumptions.** Before non-trivial work, list the assumptions you are making and let the user correct them. Don't silently fill gaps.
 2. **Manage confusion.** On conflicting requirements or spec-vs-code mismatches: stop, name the confusion, present the trade-off, wait.
 3. **Push back when warranted.** Name concrete downsides (quantify where you can), propose an alternative, accept an informed override. No sycophancy.

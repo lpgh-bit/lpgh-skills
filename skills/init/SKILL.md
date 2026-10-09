@@ -42,6 +42,8 @@ Read what exists; don't assume.
 
 ## 2. Sections — one question at a time
 
+**0. Language.** First question, asked in English: "Everything I write for this repo — conversation, specs, tickets, reviews, docs, commit messages — will be in **English**. Prefer another language?" (recommended: English). Code identifiers/comments keep the repo's convention; UI copy follows the product. Record the answer in `project.md` → `## Language`, and from the next question on **use that language** for the rest of `/init`. Rules: [`../../references/language.md`](../../references/language.md).
+
 **A. Issue tracker.** Recommend **local markdown** (`.tickets/`, gitignored). Mention GitHub (`gh`) or GitLab (`glab`) when the remote points there and the user wants issues there. "Other" (Jira, Linear…) → ask for a one-paragraph workflow and write it as prose, mapped onto the operations in `tickets.md`.
 - If `.scratch/` exists, offer to migrate its efforts into `.tickets/` (rename `ready-for-agent` → `ready`, `ready-for-human` → `needs-human`, add missing header fields with `-`).
 - GitHub/GitLab templates carry a "PRs as a request surface" flag, default **off** — leave it off and don't raise it.
@@ -73,6 +75,8 @@ Show drafts of every file and the agent block. Let the user edit before anything
 ## Agent skills
 
 This repo uses lpgh-skills. Start work with `/work` (Claude Code: `/lpgh-skills:work`, omp: `/skill:work`).
+
+**Language: <language>.** Talk to the user and write specs, tickets, reviews, docs and commit messages in <language>. Code identifiers and comments follow the repo's convention; ticket field names/values stay English.
 
 - **Issue tracker** — <one line>. See `docs/agents/issue-tracker.md`.
 - **Statuses/labels** — <one line>. See `docs/agents/triage-labels.md`.

@@ -9,6 +9,7 @@ Ticket: <effort>#<NN> — <path to ticket file or tracker id>
 Spec: <path to spec.md or spec issue>
 Milestone: <M#> — see <path to milestones.md>
 Project profile: docs/agents/project.md
+Language: <project language> — ticket text, comments, decisions and commit message in it; code per repo convention
 Branch: <feature branch> (already checked out — do not switch branches)
 Risk: <low|medium|high|critical> — see <plugin>/references/risk.md
 
