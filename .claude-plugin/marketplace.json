@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "lpgh-skills",
+  "description": "lpgh-skills — unified engineering skill pack for Claude Code and omp.",
+  "owner": { "name": "lpghbit", "url": "https://github.com/lpghbit" },
+  "plugins": [
+    {
+      "name": "lpgh-skills",
+      "version": "0.1.0",
+      "source": "./",
+      "description": "Merged mattpocock + addyosmani + frontend-design skills with a /work orchestrator, markdown tickets, milestones, risk-based escalation and /init.",
+      "license": "MIT",
+      "keywords": ["skills", "workflow", "tdd", "tickets", "review"]
+    }
+  ]
+}

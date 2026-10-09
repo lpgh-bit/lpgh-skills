@@ -1,0 +1,12 @@
+{
+  "name": "lpgh-skills",
+  "version": "0.1.0",
+  "description": "One engineering skill pack for Claude Code and omp: mattpocock/skills + addyosmani/agent-skills + anthropics frontend-design, merged, with a /work orchestrator, a markdown ticket system with milestones and risk-based escalation, and /init.",
+  "author": { "name": "lpghbit" },
+  "homepage": "https://github.com/lpghbit/lpgh-skills",
+  "repository": "https://github.com/lpghbit/lpgh-skills",
+  "license": "MIT",
+  "keywords": ["skills", "workflow", "tdd", "tickets", "review", "orchestration"],
+  "skills": "./skills",
+  "agents": ["./agents/code-reviewer.md", "./agents/security-auditor.md", "./agents/test-engineer.md", "./agents/web-performance-auditor.md"]
+}
