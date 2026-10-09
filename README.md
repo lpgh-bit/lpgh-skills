@@ -2,31 +2,40 @@
 
 One engineering skill pack for **omp** and **Claude Code**. It merges [mattpocock/skills](https://github.com/mattpocock/skills), [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) and Anthropic's [frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design) into 41 skills with one vocabulary, adds a `/work` orchestrator, a markdown ticket system with milestones and risk-based escalation, and `/init`.
 
-## Install
-
-**omp**
-```sh
-omp plugin marketplace add lpgh-bit/lpgh-skills   # or a local path: ./path/to/lpgh-skills
-omp plugin install lpgh-skills@lpgh-skills
-```
-
-**Claude Code**
-```
-/plugin marketplace add lpgh-bit/lpgh-skills
-/plugin install lpgh-skills@lpgh-skills
-```
-
-If you had them installed, remove `mattpocock-skills` and `frontend-design` — lpgh-skills replaces both.
-
-Commands: Claude Code `/lpgh-skills:<name>`, omp `/skill:<name>`.
-
 ## Quick start
 
-```
-/init                 # once per repo: tracker, .tickets/, domain docs, project profile, agent block
-/work <idea>          # grill → spec [gate] → UI design [gate, if UI] → tickets [gate] → milestone loop → milestone review [gate] → ship
-/work                 # resume where .tickets/ says you are
-```
+**1. Install** (once per machine)
+
+| | omp | Claude Code |
+|---|---|---|
+| add + install | `omp plugin marketplace add lpgh-bit/lpgh-skills`<br>`omp plugin install lpgh-skills@lpgh-skills` | `/plugin marketplace add lpgh-bit/lpgh-skills`<br>`/plugin install lpgh-skills@lpgh-skills` |
+| command prefix | `/skill:<name>` | `/lpgh-skills:<name>` |
+
+Remove `mattpocock-skills` and `frontend-design` if installed — lpgh-skills replaces both.
+
+**2. Set up the repo** (once per repo) — omp `/skill:init` · Claude Code `/lpgh-skills:init`
+(Not the bare `/init` — in Claude Code that is the built-in CLAUDE.md generator.) It asks for the language, tracker, project commands and how a user runs your product.
+
+**3. Work** — omp `/skill:work <what you want>` · Claude Code `/lpgh-skills:work <what you want>`
+Run it without text to resume where you left off.
+
+## Default workflow
+
+What `/work <idea>` does, and what you do:
+
+| # | Step | What happens | You |
+|---|---|---|---|
+| 1 | **Grill** | Asks one question at a time, each with a recommendation, until nothing about your intent is open. Looks up facts itself. | answer, confirm the summary |
+| 2 | **Spec** — gate | Writes `.tickets/<effort>/spec.md`: stories, decisions, test seams, user-level acceptance. | approve / correct |
+| 3 | **UI design** — gate, only with UI | Proposes a direction based on your existing design, shows real variants in the app, records `DESIGN.md`. | pick / adjust |
+| 4 | **Tickets** — gate | Cuts vertical-slice tickets with blockers, `Skills:`, `Risk:` and milestones. | approve / reshape |
+| 5 | **Build** | Per ticket a fresh subagent: test-first, reuse existing code, verify. Review depth by risk; one commit per ticket on `feature/<effort>`. | nothing — progress lines; `critical` tickets wait for your OK |
+| 6 | **Milestone review** — gate | Coherence, readability, full suite, performance, security, and a test through the real UI/CLI. Findings → fix tickets. Improvement ideas listed. | accept the milestone, pick ideas |
+| 7 | repeat 5–6 per milestone, then **ship** | Summary, offers `ship` / PR. | push yourself, or say "push" |
+
+Everything is in `.tickets/<effort>/` (local, gitignored). Nothing is pushed, merged or PR'd without your explicit OK.
+
+**Other entry points** — all through `/work`, which routes: a bug (`/work the export crashes on empty orders`) → debugging + fix ticket · a tiny low-risk change → straight to build · a huge foggy effort → `wayfinder` · reviewing a branch → `review`.
 
 ## How it works
 

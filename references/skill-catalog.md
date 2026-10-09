@@ -4,6 +4,8 @@ Every skill in lpgh-skills with one line on when it applies. `/to-tickets` picks
 
 **Invocation:** `cmd` = user-invoked only (`/lpgh-skills:<name>` in Claude Code, `/skill:<name>` in omp; marked `disable-model-invocation: true` + `hide: true`); `auto` = the agent may load it itself.
 
+**Naming a command to the user:** always with the harness prefix — Claude Code `/lpgh-skills:init`, omp `/skill:init`. Short forms like `/init` in skill texts mean this pack's skill; never tell the user to type bare `/init` (in Claude Code that is the built-in CLAUDE.md generator).
+
 ## Flow commands
 
 | Skill | Inv. | Use when |

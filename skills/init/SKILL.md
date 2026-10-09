@@ -90,4 +90,4 @@ Don't commit; tell the user which files changed.
 
 ## 5. Done
 
-Summarise what was written and what's unverified. Next steps: `/work <idea>` to start, or `/grill` to sharpen an idea first. Re-run `/init` to switch trackers or refresh the profile; small tweaks are just edits to `docs/agents/*.md`.
+Summarise what was written and what's unverified. Next steps (write them with the harness prefix — Claude Code `/lpgh-skills:…`, omp `/skill:…`): `work <idea>` to start, or `grill` to sharpen an idea first. Re-run `init` to switch trackers or refresh the profile; small tweaks are just edits to `docs/agents/*.md`.
