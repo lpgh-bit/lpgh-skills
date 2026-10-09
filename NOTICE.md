@@ -26,3 +26,7 @@ lpgh-skills is a one-time fork (snapshot of October 2026) that merges three skil
 | `ship` | addy shipping-and-launch (renamed) |
 | `resolve-conflicts` | mattpocock resolving-merge-conflicts (renamed) |
 | `batch-grill` | mattpocock batch-grill-me (renamed) |
+
+## Changes to Apache-2.0 files
+
+`skills/frontend-design/SKILL.md` — description extended and an "In lpgh-skills" section added at the top; the original guidance below it is unchanged. `skills/frontend-design/DESIGN-PHASE.md` is new.

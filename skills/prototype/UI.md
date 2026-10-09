@@ -33,6 +33,8 @@ In both sub-shapes the floating bottom bar is identical.
 
 ## Process
 
+Read `DESIGN.md` and the project's theme/component library first — variants differ in layout and emphasis, but reuse existing tokens and components unless the user asked for a new direction.
+
 ### 1. State the question and pick N
 
 Default to **3 variants**. More than 5 stops being radically different and starts being noise — cap there.

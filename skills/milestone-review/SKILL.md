@@ -24,7 +24,7 @@ Run axes A–F as **parallel subagents** (each gets: fixed point, diff command, 
 
 | Axis | How | Looks for |
 |---|---|---|
-| **A. Spec & coherence** | the Spec axis of `review` across all milestone tickets + `milestones.md` acceptance | missing/partial acceptance, scope creep, **tickets that don't fit together**: duplicated logic across tickets **or with code that already existed before the milestone** (one-off re-implementations instead of reuse), inconsistent naming/patterns/error handling, a broken end-to-end path between slices, glossary drift from `CONTEXT.md`, ADR conflicts |
+| **A. Spec & coherence** | the Spec axis of `review` across all milestone tickets + `milestones.md` acceptance | missing/partial acceptance, scope creep, **tickets that don't fit together**: duplicated logic across tickets **or with code that already existed before the milestone** (one-off re-implementations instead of reuse), inconsistent naming/patterns/error handling, a broken end-to-end path between slices, glossary drift from `CONTEXT.md`, ADR conflicts, **UI drift from `DESIGN.md` / the spec's `## UI Design`** (tokens, components, layout, states, copy) |
 | **B. Standards & readability** | the Standards axis of `review` ([SMELLS](../review/SMELLS.md)) + readability pass | documented-standard violations, smells, and **readability**: can a new engineer follow it without explanation? names, function length, nesting, comments that explain *why*, dead code, clever code. Unreadable code is a `major` finding, not a nit. |
 | **C. Verification & tests** | run **full** suite, typecheck, lint, build from `project.md`; `test-engineer` agent for gaps | red anything (→ `critical`), flaky tests (run the suite twice if it's fast), untested behaviour in the diff, tests coupled to implementation, weakened/skipped tests |
 | **D. Performance** | `performance-optimization` skill; for web apps also the `web-performance-auditor` agent | measured regressions on the milestone's paths (startup, hot endpoints, queries/N+1, bundle size, Core Web Vitals, frame time for games); measure, don't guess — report numbers |
@@ -49,7 +49,7 @@ Test the milestone **the way its user meets it** — never by calling internals 
 Steps:
 1. Build and start the product with the commands from `project.md` (seed data/test accounts as documented).
 2. Execute the milestone's **User-level test** from `milestones.md`, then each ticket's User-level test, then one unscripted "real user" pass around the edges (empty states, bad input, back/refresh, repeated actions).
-3. Record evidence: steps, observed result, screenshots/output snippets, console errors.
+3. Record evidence: steps, observed result, screenshots/output snippets, console errors. For UI, compare screenshots against `DESIGN.md` and the chosen variant (desktop and mobile width).
 4. Stop anything you started.
 
 **If no means to test as a user exists** in this environment (best available tool order: harness tool → Playwright/automation → nothing): the milestone **cannot pass** here. Write precise manual test steps (setup, actions, expected results) for the user and mark G as `pending-manual`. Never substitute an API call or unit test and call it a user test.

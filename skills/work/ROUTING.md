@@ -14,6 +14,7 @@ idea ─► grill ─► to-spec [G1] ─► to-tickets [G2] ─► milestone lo
 - A question needs a runnable answer → `prototype` (throwaway), bring the answer back.
 - Facts needed from docs/APIs → `research` (background), feed the result into `grill`.
 - Small, obvious change (≤ one ticket) → `implement` directly, no spec.
+- New UI or a redesign without a spec → `frontend-design` design phase with the user first, then `implement` (or the main flow if it's bigger).
 - Context getting full → `handoff`, continue in a fresh session with `/work <effort>`.
 
 ## On-ramps
@@ -40,7 +41,7 @@ Task arrives
 
 ## While building (load alongside implement)
 
-UI → `frontend-ui-engineering` (+ `frontend-design` for visual direction) · API/contracts → `api-and-interface-design` · module shape → `codebase-design` · untrusted input/auth → `security-and-hardening` · hot paths → `performance-optimization` · framework APIs → `source-driven-development` · high stakes/unfamiliar code → `doubt-driven-development` · browser verification → `browser-testing-with-devtools` · domain terms/decisions → `domain-docs` · agent context setup → `context-engineering` · git/release → `git-workflow-and-versioning`.
+UI → `frontend-ui-engineering` + `frontend-design` (design phase with the user when `DESIGN.md` doesn't cover it) · API/contracts → `api-and-interface-design` · module shape → `codebase-design` · untrusted input/auth → `security-and-hardening` · hot paths → `performance-optimization` · framework APIs → `source-driven-development` · high stakes/unfamiliar code → `doubt-driven-development` · browser verification → `browser-testing-with-devtools` · domain terms/decisions → `domain-docs` · agent context setup → `context-engineering` · git/release → `git-workflow-and-versioning`.
 
 ## Typical short chains
 

@@ -36,7 +36,7 @@ Every skill in lpgh-skills with one line on when it applies. `/to-tickets` picks
 | `codebase-design` | introduces or reshapes a module interface or seam. |
 | `api-and-interface-design` | adds/changes a public API, endpoint, type contract or module boundary. |
 | `frontend-ui-engineering` | builds or changes UI components, layout, state, accessibility. |
-| `frontend-design` | needs visual/aesthetic direction (new screens, redesigns). |
+| `frontend-design` | changes UI at all — always paired with `frontend-ui-engineering`; follows `DESIGN.md`, and runs the design phase with the user when a screen isn't covered. |
 | `browser-testing-with-devtools` | must be verified in a real browser (DOM, console, network, perf). |
 | `security-and-hardening` | touches untrusted input, auth, sessions, secrets, storage, third-party calls. |
 | `performance-optimization` | has a performance requirement or touches a hot path / queries. |

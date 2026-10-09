@@ -33,7 +33,7 @@ You are the **orchestrator**. You keep the big picture, the ticket state and the
 
 **Resume:** list `.tickets/*/` efforts (or tracker efforts) with open tickets. One → use it; several → ask which. Then derive the phase from state:
 
-- no `spec.md` or spec `Status: draft` → §3 · approved spec but no tickets → §4 · `milestones.md` has a milestone with tickets not all `done` → §5 for it · all tickets of a milestone `done` but milestone not `passed` → §6 · all milestones `passed` → §7.
+- no `spec.md` or spec `Status: draft` → §3 · approved spec with `UI design: pending` → §3b · approved spec (UI approved/covered/none) but no tickets → §4 · `milestones.md` has a milestone with tickets not all `done` → §5 for it · all tickets of a milestone `done` but milestone not `passed` → §6 · all milestones `passed` → §7.
 - Tickets stuck in `claimed`/`in-review` from a crashed session: check git log for their commit; finished → `done`, else back to `ready`.
 
 ## 2. Grill
@@ -45,6 +45,10 @@ If a question needs a runnable answer (state model, UI feel), detour through `pr
 ## 3. Spec — GATE 1
 
 Run `to-spec`. Present the spec. **Stop and wait for the user's approval.** Apply requested changes, then continue.
+
+## 3b. UI design — DESIGN GATE (only when the spec has UI)
+
+If the spec's `## UI Design` says `pending`: run the design phase with the user — read `../frontend-design/SKILL.md` and [`../frontend-design/DESIGN-PHASE.md`](../frontend-design/DESIGN-PHASE.md): inventory the existing design system, propose a direction, show real in-app variants when the screen is new or the user is unsure, record the result in `DESIGN.md` and the spec. **Stop until the user approved the UI design** (`UI design: approved`). `covered by DESIGN.md` → skip.
 
 ## 4. Tickets — GATE 2
 
@@ -91,6 +95,7 @@ All milestones passed → summarise the effort (tickets, commits, open `needs-hu
 | Gate | When | What the user approves |
 |---|---|---|
 | 1 | after spec | the spec |
+| design | after spec, when there is UI | direction, variants, `DESIGN.md` additions |
 | 2 | after ticket cut | tickets, blocking edges, skills, milestones |
 | 3 | after each milestone review | milestone result, user-level test, remaining findings |
 | critical | before committing a `Risk: critical` ticket | the diff, review and doubt results |

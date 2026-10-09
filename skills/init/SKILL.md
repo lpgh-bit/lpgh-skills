@@ -34,6 +34,7 @@ Read what exists; don't assume.
 - `CONTEXT.md`, `CONTEXT-MAP.md`, `docs/adr/`, `src/*/docs/adr/`.
 - Monorepo signals: `pnpm-workspace.yaml`, `workspaces` in `package.json`, `settings.gradle(.kts)` with many includes, a populated `packages/*`.
 - Stack and commands: build files (`package.json` scripts, `build.gradle(.kts)`, `pom.xml`, `Cargo.toml`, `go.mod`, `pyproject.toml`, `Makefile`, `justfile`), CI config (`.github/workflows`, `.gitlab-ci.yml`) — CI shows the commands that really run. `README`/`CONTRIBUTING` for run instructions and standards.
+- UI design system: `DESIGN.md`, theme/token files, component library in the build, Storybook — recorded in the profile's *Design system* section.
 - What kind of product it is (web app, API, CLI, library, game, desktop) and how a user would reach it.
 - Which harness you run in (Claude Code or omp) — decides the hooks section.
 

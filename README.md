@@ -24,20 +24,21 @@ Commands: Claude Code `/lpgh-skills:<name>`, omp `/skill:<name>`.
 
 ```
 /init                 # once per repo: tracker, .tickets/, domain docs, project profile, agent block
-/work <idea>          # grill → spec [gate] → tickets [gate] → milestone loop → milestone review [gate] → ship
+/work <idea>          # grill → spec [gate] → UI design [gate, if UI] → tickets [gate] → milestone loop → milestone review [gate] → ship
 /work                 # resume where .tickets/ says you are
 ```
 
 ## How it works
 
 ```
-idea ─► grill ─► to-spec ──[G1 spec]──► to-tickets ──[G2 tickets·skills·risk·milestones]──►
+idea ─► grill ─► to-spec ──[G1 spec]──► (UI? design phase ──[design gate]──►) to-tickets ──[G2 tickets·skills·risk·milestones]──►
    ┌─► per ticket: fresh subagent runs implement (tdd + the ticket's Skills)
    │      low: commits itself · medium+: fresh-context review → commit · critical: [your OK] → commit
    └── until milestone done ─► milestone-review ──[G3]──► next milestone … ─► ship
 ```
 
 - **Tickets** live in `.tickets/<effort>/` (gitignored): `spec.md`, `milestones.md`, `ideas.md`, `issues/NN-slug.md`. GitHub/GitLab issues work too (`/init`). Protocol: [references/tickets.md](references/tickets.md).
+- **UI is designed with you** — `frontend-design` reads `DESIGN.md` and the existing design system first. Anything not covered gets a design phase: direction proposal, real in-app variants to flip through, your pick, recorded in `DESIGN.md` (committed) and the spec. UI tickets then follow it without asking.
 - **Every ticket names its `Skills:`** — the implementer loads exactly those. Catalog: [references/skill-catalog.md](references/skill-catalog.md).
 - **Risk decides rigour** — `low` plain TDD + self-review · `medium` fresh-context review · `high` three-axis review + doubt-driven development · `critical` + security audit + your approval before commit. [references/risk.md](references/risk.md).
 - **Milestone review** — spec & cross-ticket coherence, readability, full suite, test gaps, performance (measured), security, simplification, and a **user-level test through the real interface** (browser, CLI, game). Findings become fix tickets (max 2 rounds).

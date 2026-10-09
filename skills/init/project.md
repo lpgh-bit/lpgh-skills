@@ -8,6 +8,13 @@ Read by `implement`, `tdd`, `review`, `milestone-review` and `/work` instead of 
 - Package / build tools: <e.g. Gradle, npm>
 - Kind of product: <web app | API service | CLI | library | game | desktop app | mixed>
 
+## Design system
+
+- `DESIGN.md`: <present | none yet — created by the first design phase>
+- Theme/tokens: <path, e.g. src/styles/_tokens.scss, tailwind.config.ts>
+- Component library: <e.g. Angular Material, shadcn/ui, none>
+- Storybook / component catalogue: <URL/command | none>
+
 ## Commands
 
 Run from the repo root unless noted. Leave a line as `-` when it doesn't exist.

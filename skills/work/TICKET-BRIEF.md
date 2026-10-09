@@ -24,6 +24,8 @@ Rules:
 - Only this ticket. Don't touch other tickets' files or scope.
 - Reuse existing code (helpers, services, components, patterns, dependencies) before writing new code.
   A one-off solution only if nothing fits or the ticket explicitly asks for it — record why under `## Decisions`.
+- UI: follow DESIGN.md and the spec's `## UI Design` exactly; don't ask the user. Gaps → closest existing
+  pattern, recorded under `## Decisions`, plus an idea in ideas.md.
 - Improvements you notice outside this ticket: note them in the effort's ideas.md (see tickets.md "Note idea"), don't do them.
 - Never push, merge, rebase or switch branches. Never commit `.tickets/`.
 - If you cannot finish after an honest attempt: revert your uncommitted changes, write the failure

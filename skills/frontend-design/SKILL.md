@@ -1,10 +1,19 @@
 ---
 name: frontend-design
-description: Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography, and making choices that don't read as templated defaults.
+description: Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one — and for working the design out together with the user (direction proposal, real in-app variants, DESIGN.md). Helps with aesthetic direction, typography, and making choices that don't read as templated defaults. Use for any UI work — new screens, components, layouts, redesigns, landing pages — and when a spec or ticket involves UI.
 license: Complete terms in LICENSE.txt
 ---
 
 # Frontend Design
+
+## In lpgh-skills: design with the user, not for them
+
+1. **Read what exists first:** `DESIGN.md`, the design-system line in `docs/agents/project.md`, the project's theme/tokens and component library. An existing design system wins — extend it, don't start a parallel look.
+2. **Covered** by it → build by it, no questions.
+3. **Not covered** (new screen, component type, flow, redesign) and a user is reachable → run the design phase in [DESIGN-PHASE.md](DESIGN-PHASE.md): propose a direction, let the user decide, show real variants in the app when it matters, record the result in `DESIGN.md` and the spec's `## UI Design`.
+4. **No user reachable** (ticket subagent) → never ask; follow `DESIGN.md` + spec, take the closest existing pattern for gaps, record it under the ticket's `## Decisions` and note an idea for the user.
+
+Build quality (components, state, accessibility, responsiveness) comes from `frontend-ui-engineering`; load both for UI tickets. The guidance below shapes every proposal and build.
 
 Approach this as the design lead at a design studio known for giving every client a distinct visual identity that is not mistaken for anyone else's. This client has already rejected proposals that felt cliché or templated, and is paying for a distinctive point of view: make deliberate, opinionated choices about palette, typography, and layout that are specific to this brief, and take aesthetic risk if justified.
 

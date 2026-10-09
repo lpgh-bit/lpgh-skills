@@ -115,6 +115,10 @@ How a user exercises the finished feature through the real interface, end to end
 
 This is what `/milestone-review` runs at the end.
 
+## UI Design
+
+Only when the work has a user interface. Leave as `UI design: pending` — the design phase (`../frontend-design/DESIGN-PHASE.md`, run by `/work` after spec approval) fills it with the chosen direction, wireframes, per-screen states and copy decisions, and sets `UI design: approved`. If `DESIGN.md` / the design system already covers every screen, write `UI design: covered by DESIGN.md` and list which parts apply.
+
 ## Boundaries
 
 - **Always:** things every implementer must do (e.g. validate input at the API edge, keep the old endpoint working).

@@ -47,7 +47,7 @@ Explore the code the work touches. Note **existing code to reuse** (modules, hel
 
 **a. Blocking edges.** Each ticket lists only the tickets that genuinely gate it. Unblocked tickets can start at once.
 
-**b. Skills.** For each ticket choose from the *Implementation skills* table in the catalog, following its "Choosing `Skills:`" rules — `tdd` by default for code tickets, plus every skill whose row matches what the ticket touches, typically 2–4.
+**b. Skills.** Every ticket that changes UI gets `frontend-design` **and** `frontend-ui-engineering`, and its `## Notes` name the `DESIGN.md` parts and the spec's `## UI Design` screen it implements. If the spec has UI but `UI design` isn't `approved`/`covered`, stop — the design gate comes first. For each ticket choose from the *Implementation skills* table in the catalog, following its "Choosing `Skills:`" rules — `tdd` by default for code tickets, plus every skill whose row matches what the ticket touches, typically 2–4.
 
 **c. Risk.** Classify each ticket with [`../../references/risk.md`](../../references/risk.md) — highest matching row wins, one level up when in doubt — and add the skills that level requires to `Skills:` (e.g. `doubt-driven-development` for `high`/`critical`).
 
