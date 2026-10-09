@@ -6,13 +6,13 @@ One engineering skill pack for **omp** and **Claude Code**. It merges [mattpococ
 
 **omp**
 ```sh
-omp plugin marketplace add lpghbit/lpgh-skills   # or a local path: ./path/to/lpgh-skills
+omp plugin marketplace add lpgh-bit/lpgh-skills   # or a local path: ./path/to/lpgh-skills
 omp plugin install lpgh-skills@lpgh-skills
 ```
 
 **Claude Code**
 ```
-/plugin marketplace add lpghbit/lpgh-skills
+/plugin marketplace add lpgh-bit/lpgh-skills
 /plugin install lpgh-skills@lpgh-skills
 ```
 

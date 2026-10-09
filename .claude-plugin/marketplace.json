@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "lpgh-skills",
   "description": "lpgh-skills — unified engineering skill pack for Claude Code and omp.",
-  "owner": { "name": "lpghbit", "url": "https://github.com/lpghbit" },
+  "owner": { "name": "lpgh-bit", "url": "https://github.com/lpgh-bit" },
   "plugins": [
     {
       "name": "lpgh-skills",
