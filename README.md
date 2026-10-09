@@ -44,7 +44,7 @@ idea ─► grill ─► to-spec ──[G1 spec]──► (UI? design phase ─�
 - **Milestone review** — spec & cross-ticket coherence, readability, full suite, test gaps, performance (measured), security, simplification, and a **user-level test through the real interface** (browser, CLI, game). Findings become fix tickets (max 2 rounds).
 - **Reuse first** — agents extend existing code; one-off solutions only when nothing fits or you ask for it.
 - **Ideas, not surprises** — improvement suggestions go to `ideas.md` and are shown to you at the gates; you decide what becomes a ticket.
-- **Git** — one commit per ticket on a feature branch. Never pushes, opens PRs or merges without your explicit OK.
+- **Git** — one commit per ticket on a feature branch, authored by you, no AI co-author trailers, `+`/`-`/`~` subjects ([references/commits.md](references/commits.md)). Never pushes, opens PRs or merges without your explicit OK.
 
 ## Skills
 

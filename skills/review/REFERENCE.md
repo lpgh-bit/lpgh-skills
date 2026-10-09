@@ -33,7 +33,7 @@ After a refactor, list code that became unreachable or unused and **ask before d
 
 ## Commit messages
 
-First line short, imperative, standalone ("Delete the FizzBuzz RPC"). Body: what and why, decisions not visible in code, links (`<effort>#NN`). Anti-patterns: "Fix bug", "Fix build", "Phase 1", "Moving code from A to B".
+Format and authorship per [`../../references/commits.md`](../../references/commits.md): `+`/`-`/`~` prefix, short imperative standalone subject ("~ Fix session expiry check"), body with what and why, `Ticket: <effort>#NN`; user as author, no AI attribution (flag any `Co-Authored-By` agent trailer as a finding). Anti-patterns: "Fix bug", "Fix build", "Phase 1", "Moving code from A to B".
 
 ## Disagreements
 

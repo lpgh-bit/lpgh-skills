@@ -42,5 +42,5 @@ How a real user meets this product, used for user-level acceptance tests in `/mi
 ## Conventions
 
 - Branch naming: <e.g. feature/<effort-slug>>
-- Commit style: <e.g. Conventional Commits, `<effort>#NN` in the subject>
+- Commit style: `+`/`-`/`~` prefixes, English, user as author, no AI attribution — see lpgh-skills `references/commits.md` (note project-specific deviations here)
 - Coding standards docs: <paths, e.g. CONTRIBUTING.md>

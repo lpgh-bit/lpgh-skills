@@ -27,6 +27,8 @@ Rules:
 - UI: follow DESIGN.md and the spec's `## UI Design` exactly; don't ask the user. Gaps → closest existing
   pattern, recorded under `## Decisions`, plus an idea in ideas.md.
 - Improvements you notice outside this ticket: note them in the effort's ideas.md (see tickets.md "Note idea"), don't do them.
+- Commits follow <plugin>/references/commits.md: your git identity is the user's — no Co-Authored-By or
+  any AI attribution; subject `+`/`-`/`~` + imperative summary; `Ticket: <effort>#NN` as last body line.
 - Never push, merge, rebase or switch branches. Never commit `.tickets/`.
 - If you cannot finish after an honest attempt: revert your uncommitted changes, write the failure
   report into the ticket's Comments as implement/SKILL.md describes, and return.

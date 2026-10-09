@@ -73,7 +73,7 @@ For the current milestone, repeat until its frontier is empty:
    - `critical` → as `high` + `security-auditor`; offer the user a cross-model second opinion.
    Blocking findings (anything that breaks acceptance, correctness, security, or a documented standard) → one **fix round**: a fresh implementer subagent gets the findings and fixes them in the working tree (no commit), then re-run only the reviewers that found something. Still blocking → save the diff into the ticket (`git diff > .tickets/<effort>/issues/NN-<slug>.patch`), revert the ticket's uncommitted changes, set `needs-human` with the findings. Non-blocking findings → ticket comment.
    - `critical` → **GATE**: show the user the diff summary, review results and decisions; wait for approval.
-   - Then **commit** with the subagent's proposed message (stage only the files the ticket touched, never `.tickets/`) and resolve the ticket (`done`, SHA comment).
+   - Then **commit** per [`../../references/commits.md`](../../references/commits.md) (user's identity, no AI attribution, `+`/`-`/`~` subject) with the subagent's proposed message (stage only the files the ticket touched, never `.tickets/`) and resolve the ticket (`done`, SHA comment).
 6. Tickets blocked only by a `needs-human` ticket stay blocked. When the frontier is empty: if every ticket is `done` → §6; otherwise stop and report the `needs-human` tickets and what they block.
 
 Commits: one per ticket, made by the subagent on the feature branch. **Never push, never open a PR, never merge** without the user's explicit OK.

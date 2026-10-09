@@ -74,13 +74,7 @@ Review **this ticket's diff only** against the `review` skill's [CHECKLIST.md](.
 - **`medium` / `high` / `critical`** — **do not commit.** Leave the changes in the working tree, set `Status: in-review`, put the proposed commit message in a ticket comment (`- <date> implement: READY FOR REVIEW — proposed commit: <subject>`), and return. The orchestrator runs the fresh-context review(s) from `risk.md`, then commits and resolves (or sends findings back to a fresh implementer). Run by hand without `/work`: you are the orchestrator — spawn the review subagent(s) from `risk.md` yourself, address findings, and for `critical` show the user the diff and wait for approval before committing.
 
 1. Set `Status: in-review`.
-2. Commit to the **current branch** — one commit for the ticket, conventional message referencing it:
-   ```
-   feat(<scope>): <imperative summary> (<effort>#NN)
-
-   <what and why, decisions not visible in the code>
-   ```
-   Type follows the ticket (`feature` → `feat`, `fix` → `fix`, `refactor` → `refactor`, `chore` → `chore`). Stage only files the ticket touched; never commit `.tickets/`. **Never push.** No-ticket change: same format without the ref.
+2. Commit to the **current branch** — one commit for the ticket, following [`../../references/commits.md`](../../references/commits.md): authored by the user's git identity, **no Co-Authored-By or other AI attribution**, subject `+ / - / ~ <imperative summary>`, body with the why, last line `Ticket: <effort>#NN`. Stage only files the ticket touched; never commit `.tickets/`. **Never push.** No-ticket change: same format without the `Ticket:` line.
 3. **Resolve** per `tickets.md`: `Status: done`, tick the acceptance boxes, Comment with the commit SHA and the user-level test result.
 
 Final report: ticket, SHA, tests/user-level result, *Noticed, not touched*, anything a human must check.

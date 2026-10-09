@@ -68,7 +68,7 @@ Commit messages explain the *why*, not just the *what*:
 
 ```
 # Good: Explains intent
-feat: add email validation to registration endpoint
++ Add email validation to registration endpoint
 
 Prevents invalid email formats from reaching the database.
 Uses Zod schema validation at the route handler level,
@@ -78,20 +78,21 @@ consistent with existing validation patterns in auth.ts.
 update auth.ts
 ```
 
-**Format:**
+**Format** (full rules: [`../../references/commits.md`](../../references/commits.md)):
 ```
-<type>: <short description>
+<+|-|~> <Imperative summary>
 
 <optional body explaining why, not what>
+
+Ticket: <effort>#NN
 ```
 
-**Types:**
-- `feat` — New feature
-- `fix` — Bug fix
-- `refactor` — Code change that neither fixes a bug nor adds a feature
-- `test` — Adding or updating tests
-- `docs` — Documentation only
-- `chore` — Tooling, dependencies, config
+**Prefixes:**
+- `+` — something added (feature, file, test, config option)
+- `-` — something removed (code, feature, file, dependency)
+- `~` — something changed (fix, refactor, optimisation, dependency update, docs edit)
+
+Commits are authored by the user's git identity. **Never add `Co-Authored-By` or any other AI attribution.**
 
 ### 4. Keep Concerns Separate
 
@@ -99,8 +100,8 @@ Don't combine formatting changes with behavior changes. Don't combine refactors 
 
 ```
 # Good: Separate concerns
-git commit -m "refactor: extract validation logic to shared utility"
-git commit -m "feat: add phone number validation to registration"
+git commit -m "~ Extract validation logic to shared utility"
+git commit -m "+ Add phone number validation to registration"
 
 # Bad: Mixed concerns
 git commit -m "refactor validation and add phone number field"
