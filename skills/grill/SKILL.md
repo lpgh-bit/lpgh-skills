@@ -1,8 +1,6 @@
 ---
 name: grill
-description: Interviews the user relentlessly, one question at a time with a recommended answer each, until plan, design or idea reach a shared understanding — looking facts up instead of asking, leaving every decision to the user, and (in a codebase) recording glossary terms in CONTEXT.md and ADRs as decisions land. Can open with divergent variants when the idea is still rough, or with an intent check when the ask is underspecified. Use when the user says "grill me", "stress-test this", "interview me", "refine this idea", "ideate", "are we sure?", or before a spec when the ask is vague.
-disable-model-invocation: true
-hide: true
+description: Interviews the user relentlessly, one question at a time with a recommended answer each, until plan, design or idea reach a shared understanding — looking facts up instead of asking, leaving every decision to the user, and (in a codebase) recording glossary terms in CONTEXT.md and ADRs as decisions land. Can open with divergent variants when the idea is still rough, or with an intent check when the ask is underspecified. Use proactively whenever a request is ambiguous, underspecified or open to several reasonable interpretations (missing who/why/success/constraints, vague goals like "make it better", conflicting requirements) — before planning or building. Also when the user says "grill me", "stress-test this", "interview me", "refine this idea", "ideate", "are we sure?".
 ---
 
 # Grill
@@ -38,6 +36,8 @@ Recommended: <your answer> — <why>
 | Idea is still rough; the user wants options, or "ideate"/"refine this idea" | **Diverge first** — see [DIVERGE.md](./DIVERGE.md). Then grill the chosen direction. |
 
 Modes are openers, not separate sessions: once intent or direction is settled, continue grilling under the same rules.
+
+**Invoked on your own** (the request was unclear): say in one line what is unclear and that you'll ask a few questions first; ask only what blocks a correct start — stop grilling as soon as the remaining unknowns no longer change what you'd build, restate, get the yes, then go back to the original task (no forced `/to-spec` hand-off for small asks).
 
 Don't use this skill for unambiguous mechanical asks (renames, typo fixes) or pure information requests. It needs a live user — in a non-interactive run (CI, scheduled loop, autonomous agent with no human), flag the open decisions as a blocker instead of answering them yourself.
 

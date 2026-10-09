@@ -38,6 +38,7 @@ idea ─► grill ─► to-spec ──[G1 spec]──► (UI? design phase ─�
 ```
 
 - **Tickets** live in `.tickets/<effort>/` (gitignored): `spec.md`, `milestones.md`, `ideas.md`, `issues/NN-slug.md`. GitHub/GitLab issues work too (`/init`). Protocol: [references/tickets.md](references/tickets.md).
+- **Unclear asks get grilled** — `grill` loads by itself when a request is ambiguous and asks one question at a time (with a recommendation) before anything is planned or built.
 - **UI is designed with you** — `frontend-design` reads `DESIGN.md` and the existing design system first. Anything not covered gets a design phase: direction proposal, real in-app variants to flip through, your pick, recorded in `DESIGN.md` (committed) and the spec. UI tickets then follow it without asking.
 - **Every ticket names its `Skills:`** — the implementer loads exactly those. Catalog: [references/skill-catalog.md](references/skill-catalog.md).
 - **Risk decides rigour** — `low` plain TDD + self-review · `medium` fresh-context review · `high` three-axis review + doubt-driven development · `critical` + security audit + your approval before commit. [references/risk.md](references/risk.md).
@@ -51,7 +52,7 @@ idea ─► grill ─► to-spec ──[G1 spec]──► (UI? design phase ─�
 
 | Flow (user-invoked) | Auto (agent loads when relevant) |
 |---|---|
-| `init` `work` `grill` `batch-grill` `to-spec` `to-tickets` `implement` `review` `milestone-review` `triage` `wayfinder` `ship` `handoff` `claude-handoff` `improve-codebase-architecture` `wizard` `setup-pre-commit` `setup-ts-deep-modules` | `tdd` `debugging` `domain-docs` `codebase-design` `api-and-interface-design` `frontend-ui-engineering` `frontend-design` `browser-testing-with-devtools` `security-and-hardening` `performance-optimization` `observability-and-instrumentation` `code-simplification` `deprecation-and-migration` `ci-cd-and-automation` `git-workflow-and-versioning` `source-driven-development` `doubt-driven-development` `constraint-driven-development` `context-engineering` `prototype` `research` `resolve-conflicts` `writing-great-skills` |
+| `init` `work` `batch-grill` `to-spec` `to-tickets` `implement` `review` `milestone-review` `triage` `wayfinder` `ship` `handoff` `claude-handoff` `improve-codebase-architecture` `wizard` `setup-pre-commit` `setup-ts-deep-modules` | `grill` `tdd` `debugging` `domain-docs` `codebase-design` `api-and-interface-design` `frontend-ui-engineering` `frontend-design` `browser-testing-with-devtools` `security-and-hardening` `performance-optimization` `observability-and-instrumentation` `code-simplification` `deprecation-and-migration` `ci-cd-and-automation` `git-workflow-and-versioning` `source-driven-development` `doubt-driven-development` `constraint-driven-development` `context-engineering` `prototype` `research` `resolve-conflicts` `writing-great-skills` |
 
 Agents: `code-reviewer`, `security-auditor`, `test-engineer`, `web-performance-auditor`. Optional hooks (`sdd-cache`, `simplify-ignore`, Claude Code only) are offered by `/init`.
 

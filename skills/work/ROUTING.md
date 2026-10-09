@@ -21,6 +21,7 @@ idea ─► grill ─► to-spec [G1] ─► to-tickets [G2] ─► milestone lo
 
 ```
 Task arrives
+ ├─ Request unclear / ambiguous ─────────────► grill (until clear), then route below
  ├─ Something broke / failing test / flake ──► debugging ─► fix ticket (to-tickets append) ─► implement
  ├─ Incoming reports piling up ──────────────► triage (not for tickets to-tickets made)
  ├─ Huge, foggy effort ──────────────────────► wayfinder ─► (map clear) ─► to-spec

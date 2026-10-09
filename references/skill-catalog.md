@@ -10,7 +10,7 @@ Every skill in lpgh-skills with one line on when it applies. `/to-tickets` picks
 |---|---|---|
 | `init` | cmd | Once per repo: tracker, `.tickets/`, domain docs, project profile, agent block, optional hooks. |
 | `work` | cmd | Drive anything end to end: idea → grill → spec → tickets → milestone loop → ship; or resume from `.tickets/`. Also the router when unsure which skill fits. |
-| `grill` | cmd | Sharpen an idea or plan by one-question-at-a-time interview; records glossary terms and ADRs as decisions land. |
+| `grill` | auto | Sharpen an idea or plan by one-question-at-a-time interview; records glossary terms and ADRs as decisions land. **Loaded automatically whenever a request is unclear.** |
 | `batch-grill` | cmd | Same as grill, but every frontier question at once, round by round. |
 | `to-spec` | cmd | Turn the agreed conversation into `spec.md` — no new interview. |
 | `to-tickets` | cmd | Split a spec/plan into tracer-bullet tickets with blockers, skills and milestones; **the only way any skill creates tickets** (append mode). |

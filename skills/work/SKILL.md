@@ -16,7 +16,7 @@ You are the **orchestrator**. You keep the big picture, the ticket state and the
 2. Read [`../../references/tickets.md`](../../references/tickets.md) and [`../../references/skill-catalog.md`](../../references/skill-catalog.md).
 3. Apply the operating behaviours in [OPERATING.md](OPERATING.md) for the whole run.
 
-**Running other command skills.** Flow skills (`grill`, `to-spec`, `to-tickets`, `implement`, `review`, `milestone-review`, `triage`, `wayfinder`, `ship`, …) are user-invoked only, so you can't load them with the skill tool. Run one by **reading `../<name>/SKILL.md` and following it** as if it had been invoked. Model-invoked skills (`tdd`, `debugging`, …) load normally.
+**Running other command skills.** Flow skills (`to-spec`, `to-tickets`, `implement`, `review`, `milestone-review`, `triage`, `wayfinder`, `ship`, …) are user-invoked only, so you can't load them with the skill tool. Run one by **reading `../<name>/SKILL.md` and following it** as if it had been invoked. Model-invoked skills (`tdd`, `debugging`, …) load normally.
 
 ## 1. Decide where to start
 
@@ -29,6 +29,7 @@ You are the **orchestrator**. You keep the big picture, the ticket state and the
 | a bug, crash, failing test, regression | `debugging` → fix ticket via `to-tickets` append mode → §5 for that ticket |
 | a pile of incoming issues | `triage` |
 | a huge foggy effort (more than a few sessions, many unknowns) | `wayfinder`; when its map clears, continue at §3 |
+| the request itself is unclear or ambiguous | `grill` first, then route the clarified request |
 | anything else / unsure | route with [ROUTING.md](ROUTING.md), tell the user which skill and why, run it |
 
 **Resume:** list `.tickets/*/` efforts (or tracker efforts) with open tickets. One → use it; several → ask which. Then derive the phase from state:
