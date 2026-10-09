@@ -17,6 +17,12 @@ Feed agents the right information at the right time. Context is the single bigge
 - Setting up a new project for AI-assisted development
 - The agent is not following project conventions
 
+## In lpgh-skills
+
+- Stack and commands live in `docs/agents/project.md` (written by `/init`), not in the rules file. `AGENTS.md`/`CLAUDE.md` hold only the `## Agent skills` block plus genuine project rules (boundaries, conventions not enforced by tooling); point at `project.md` instead of copying commands into them. The Level 1 template below is for repos without that split.
+- Domain vocabulary lives in `CONTEXT.md`, decisions in `docs/adr/`, the quality bar in `CONSTRAINTS.md`, effort state in `.tickets/<effort>/` — pass subagents those paths, not summaries.
+- `/work` routes "output quality degrading" here first; if curating the context doesn't fix it, it runs `handoff` to a fresh session.
+
 ## The Context Hierarchy
 
 Structure context from most persistent to most transient:

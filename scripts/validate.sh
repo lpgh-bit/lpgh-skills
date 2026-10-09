@@ -3,7 +3,7 @@
 # stale names from the source repos, and relative links. Exit 1 on any error.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-exec python3 -I - "$@" <<'PY'
+python3 -I - "$@" <<'PY'
 import json, os, re, sys, glob
 
 errors = []
@@ -68,6 +68,46 @@ for path in glob.glob("**/*.md", recursive=True) + glob.glob("**/*.sh", recursiv
             if re.search(pat, line):
                 err(f"{path}:{i}: stale name /{pat}/: {line.strip()[:100]}")
 
+# --- removed addy commands / packages -------------------------------------
+OLDCMD = re.compile(r"(?:^|[\s`(\"'])/(build|spec|plan|test|code-simplify|constraints|webperf)\b(?![/\w.-])|\bagent-skills:")
+for path in glob.glob("skills/**/*.md", recursive=True) + glob.glob("references/*.md") + glob.glob("agents/*.md") + glob.glob("hooks/*.md"):
+    for i, line in enumerate(open(path, errors="replace"), 1):
+        if OLDCMD.search(line):
+            err(f"{path}:{i}: removed addy command/package: {line.strip()[:100]}")
+
+# --- routing table covers every skill --------------------------------------
+routing = open("skills/work/ROUTING.md").read() + open("references/skill-catalog.md").read()
+for s_ in skills:
+    if s_ not in ("work",) and f"`{s_}`" not in open("skills/work/ROUTING.md").read() and not re.search(rf"\b{re.escape(s_)}\b", open("skills/work/ROUTING.md").read()):
+        err(f"skills/work/ROUTING.md: skill '{s_}' is never routed")
+
+# --- ticket template uses real skills + UI pairing --------------------------
+tk = open("references/tickets.md").read()
+for line in re.findall(r"^Skills: (.+)$", tk, re.M):
+    names = [x.strip() for x in line.split(",")]
+    for n in names:
+        if n not in skills: err(f"references/tickets.md: template Skills lists unknown '{n}'")
+    if ("frontend-ui-engineering" in names) != ("frontend-design" in names):
+        err("references/tickets.md: UI template must pair frontend-design with frontend-ui-engineering")
+
+# --- agents frontmatter -----------------------------------------------------
+for path in glob.glob("agents/*.md"):
+    m = re.match(r"^---\n(.*?)\n---\n", open(path).read(), re.S)
+    fm = dict(re.findall(r"^([A-Za-z-]+):\s*(.*)$", m.group(1), re.M)) if m else {}
+    if fm.get("name") != os.path.basename(path)[:-3] or not fm.get("description"):
+        err(f"{path}: agent frontmatter needs name (= file name) and description")
+
+# --- <plugin>/... paths in the subagent brief -------------------------------
+for t in re.findall(r"<plugin>/([A-Za-z0-9_./-]+\.md)", open("skills/work/TICKET-BRIEF.md").read()):
+    if not os.path.exists(t): err(f"skills/work/TICKET-BRIEF.md: <plugin>/{t} does not exist")
+
+# --- README lists every skill and the right count ----------------------------
+readme = open("README.md").read()
+for s_ in skills:
+    if f"`{s_}`" not in readme: err(f"README.md: skill '{s_}' missing from the skills table")
+m = re.search(r"into (\d+) skills", readme)
+if m and int(m.group(1)) != len(skills): err(f"README.md says {m.group(1)} skills, found {len(skills)}")
+
 # --- relative links --------------------------------------------------------
 LINK = re.compile(r"\]\(((?:\.\./|\./)?[A-Za-z0-9_./-]+\.(?:md|sh|cjs|txt|json))(?:#[^)]*)?\)")
 TICK = re.compile(r"`((?:\.\./)+[A-Za-z0-9_./-]+\.(?:md|sh))`")
@@ -88,3 +128,4 @@ if errors:
     sys.exit(1)
 print("OK")
 PY
+python3 -I scripts/routing_evals.py .

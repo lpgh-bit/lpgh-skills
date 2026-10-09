@@ -19,6 +19,78 @@ Ship with confidence. The goal is not just to deploy — it's to deploy safely, 
 - Opening a beta or early access program
 - Any deployment that carries risk (all of them)
 
+## Process
+
+`ship` is a **fan-out orchestrator** run by the **main session**: specialist agents report in parallel, the main session merges their reports into one GO/NO-GO decision with a rollback plan. Agents never call each other and are never dispatched from inside a subagent (subagents can't spawn subagents).
+
+**Hardening suite on?** It is when any ticket of the effort has `Risk: high`/`critical` or the spec says `Scale: large` ([`../../references/hardening.md`](../../references/hardening.md)).
+
+### 1. Collect the specialist reports
+
+- **Reuse:** if every milestone in `milestones.md` is `passed` **and** `HEAD` hasn't moved since the last milestone review, reuse that review's reports (code review, security, tests — and with the suite on, every hardening item). Say that you reused them and from which review.
+- **Otherwise, suite off:** dispatch three agents **in one turn** (parallel, never sequential), each on the diff since the fixed point (merge-base with the default branch unless the user names one):
+  1. `code-reviewer` — five-axis review, its standard template.
+  2. `security-auditor` — threat model, OWASP Top 10, secrets, authn/authz, dependency CVEs; its standard report.
+  3. `test-engineer` — coverage of happy path, edge cases, error paths, concurrency; its standard analysis.
+- **Otherwise, suite on:** run **all** of `hardening.md` (items 1–12) instead of the three agents above, each as its own fresh-context subagent dispatched by you. A check that can't run is reported **not run** with the reason — never silently skipped.
+
+**Skip rule (suite off only):** skip the fan-out only if the change touches ≤ 2 files, the diff is < 50 lines, **and** it touches no auth, payments, data access, or config/env. Otherwise fan out, even for a diff that looks small. With the suite on there is no skip.
+
+If the user has their own `code-reviewer` / `security-auditor` / `test-engineer` in `.claude/agents/` or `~/.claude/agents/`, those take precedence — that's intended.
+
+### 2. Merge in the main session
+
+You (not an agent) synthesise:
+
+1. **Code quality** — Critical/Important findings from `code-reviewer` + failing tests, lint, build. De-duplicate.
+2. **Security** — every Critical/High `security-auditor` finding is a blocker. Cross-check with `code-reviewer`'s security axis.
+3. **Performance** — `code-reviewer`'s performance axis (suite on: hardening #7's measurements); Core Web Vitals if applicable.
+4. **Accessibility** — not covered by the three agents: verify keyboard nav, screen reader, contrast yourself against [`../../references/accessibility-checklist.md`](../../references/accessibility-checklist.md) (suite on: hardening #8).
+5. **Infrastructure** — env vars, migrations (with verified down-path), feature flags, monitoring/alerts. Verify directly.
+6. **Documentation** — README, ADRs, changelog, API docs. Verify directly.
+
+The [Pre-Launch Checklist](#the-pre-launch-checklist) below is what you check sections 4–6 against.
+
+### 3. Decision
+
+Write the decision in the project language ([`../../references/language.md`](../../references/language.md)); keep the headings:
+
+```markdown
+## Ship Decision: GO | NO-GO
+
+### Blockers (must fix before ship)
+- [Source: Critical finding + file:line]
+
+### Recommended fixes (should fix before ship)
+- [Source: Important finding + file:line]
+
+### Acknowledged risks (shipping anyway)
+- [Risk + mitigation — only with the user's explicit acceptance]
+
+### Rollback plan
+- Trigger conditions: [what signals would prompt rollback]
+- Rollback procedure: [exact steps]
+- Recovery time objective: [target]
+
+### Specialist reports (full)
+- [code-reviewer report]
+- [security-auditor report]
+- [test-engineer report]
+- [hardening items, when the suite ran]
+```
+
+Rules:
+- The **rollback plan is mandatory** — no GO without it (see [Rollback Strategy](#rollback-strategy)).
+- Any Critical finding (or Critical/High security finding) → **NO-GO**, unless the user explicitly accepts the risk; then it moves to *Acknowledged risks* with their acceptance noted.
+
+### 4. Blockers → fix tickets
+
+Blockers become fix tickets via the `to-tickets` procedure in **append mode** (read `../to-tickets/SKILL.md`): `Type: fix`, `Severity`, `Source: ship`, acceptance = the finding resolved + evidence. Recommended fixes the user doesn't take now → `ideas.md`. After the fixes, re-run only the agents/checks that found something, then decide again.
+
+### 5. Never act without an OK
+
+`ship` decides; it does not deploy. **Never deploy, push, tag, or merge** without the user's explicit OK for that specific action — a GO verdict is not that OK.
+
 ## The Pre-Launch Checklist
 
 ### Code Quality

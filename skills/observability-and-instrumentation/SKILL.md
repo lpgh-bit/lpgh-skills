@@ -17,6 +17,8 @@ Code you can't observe is code you can't operate. Observability is the ability t
 - Setting up or reviewing alerting rules
 - Reviewing a PR that adds I/O, retries, queues, or cross-service calls
 
+**In lpgh-skills:** `to-tickets` auto-adds this skill to `Skills:` for every ticket that adds an endpoint, background job or external call in a service. It is also item #9 of the hardening suite ([`../../references/hardening.md`](../../references/hardening.md)), checked against [`../../references/observability-checklist.md`](../../references/observability-checklist.md): a new critical path without logs + metrics blocks the milestone.
+
 **NOT for:**
 - Diagnosing a failure happening right now — use the `debugging` skill (observability is what makes that skill fast next time)
 - Profiling and optimizing measured slowness — use the `performance-optimization` skill

@@ -24,3 +24,8 @@ The two branches produce very different artifacts — getting this wrong wastes 
 4. **Skip the polish.** No tests, no error handling beyond what makes the prototype _runnable_, no abstractions. The point is to learn something fast.
 5. **Surface the state.** After every action (logic) or on every variant switch (UI), print or render the full relevant state so the user can see what changed.
 6. **Capture it when done.** Fold any validated decision into the real code, then capture the prototype itself as a **primary source**: commit it to a throwaway branch, out of main, and leave a context pointer to that branch on the implementation issue. Capture the answer too — the verdict and the question it settled — in the issue or a commit. The main branch keeps only the validated decision.
+7. **Never switch the user's branch.** When a throwaway branch is needed, create it in a separate worktree (`git worktree add ../<repo>-prototype-<slug> -b prototype/<slug>`), commit there per [`../../references/commits.md`](../../references/commits.md), and remove the worktree afterwards (`git worktree remove`). The user's checkout and the feature branch stay where they are.
+
+## Design-phase override
+
+When run from the design phase ([`../frontend-design/DESIGN-PHASE.md`](../frontend-design/DESIGN-PHASE.md)), rule 6 does not apply: variants are screenshotted to `.tickets/<effort>/design/<screen>-<variant>.png`, the variant code is **deleted** after the user's decision, nothing is folded into production code (the chosen design is built through tickets with `tdd`), and there is **no** throwaway-branch commit. The screenshots plus the spec's `## UI Design` are the record.

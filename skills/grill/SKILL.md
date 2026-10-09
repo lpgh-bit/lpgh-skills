@@ -1,6 +1,6 @@
 ---
 name: grill
-description: Interviews the user relentlessly, one question at a time with a recommended answer each, until plan, design or idea reach a shared understanding — looking facts up instead of asking, leaving every decision to the user, and (in a codebase) recording glossary terms in CONTEXT.md and ADRs as decisions land. Can open with divergent variants when the idea is still rough, or with an intent check when the ask is underspecified. Use proactively whenever you are not 100% certain what the user wants — ambiguous, underspecified or open to more than one reasonable reading (missing who/why/success/constraints, vague goals like "make it better", conflicting requirements) — before planning or building, and keep going until nothing about their intent is left to guess. Also when the user says "grill me", "stress-test this", "interview me", "refine this idea", "ideate", "are we sure?".
+description: Interviews the user relentlessly, one question at a time with a recommended answer each, until plan, design or idea reach a shared understanding — looking facts up instead of asking, leaving every decision to the user, and (in a codebase) recording glossary terms in CONTEXT.md and ADRs as decisions land. Can open with divergent variants when the idea is still rough, or with an intent check when the ask is underspecified. Use proactively whenever you are not 100% certain what the user wants — ambiguous, underspecified or open to more than one reasonable reading (missing who/why/success/constraints; vague or open-ended asks like "make it better", "build something for our customers", "you decide the details", "not sure what exactly"; conflicting requirements) — before planning or building, and keep going until nothing about their intent is left to guess. Also when the user says "grill me", "stress-test this", "interview me", "refine this idea", "ideate", "are we sure?".
 ---
 
 # Grill
@@ -13,7 +13,7 @@ For the batched variant — every frontier question at once, round by round — 
 
 1. **One question at a time.** Wait for the answer before asking the next. Several questions at once are bewildering, invite skim answers, and lock in framing before earlier answers arrive.
 2. **Always give your recommended answer** with each question, plus the reasoning that produced it. Reacting to a concrete guess is faster than answering from scratch, and it exposes *your* assumptions. Be visibly willing to be wrong — a polite user agreeing to be agreeable is the main risk.
-3. **Facts are yours to find, decisions are the user's.** If a fact can be found by exploring the environment (files, code, git history, tools, docs), look it up — never ask. Put each *decision* to the user and wait for their answer.
+3. **Facts are yours to find, decisions are the user's.** If a fact can be found by exploring the environment (files, code, git history, tools, docs), look it up — never ask. A heavy documentation lookup (many pages, external specs, API behaviour across versions) may be spun off to the `research` skill while you keep grilling the questions that don't depend on it. Put each *decision* to the user and wait for their answer.
 4. **Walk the decision tree.** Ask questions whose prerequisites are settled first; a question that depends on an open answer waits. Each answer can open new branches — follow them until every branch is visited and nothing is silently assumed.
 5. **Do not act until the user confirms shared understanding.** No code, spec, tickets or other downstream work during the session.
 
@@ -27,6 +27,7 @@ Recommended: <your answer> — <why>
 ## Before the first question
 
 - Read `docs/agents/project.md` (stack, commands) and the domain docs if present: `CONTEXT.md` / `CONTEXT-MAP.md` and relevant ADRs (layout per `docs/agents/domain.md`, default `docs/adr/`). If config is missing, discover what you need and suggest `/init` at the end.
+- Read `.out-of-scope/` at the repo root before proposing scope or options: don't re-propose anything recorded there without new reasons — and if the user's ask touches an entry, say so and ask whether the reasons changed.
 - Pick the opening mode:
 
 | Situation | Mode |

@@ -6,14 +6,16 @@ license: Complete terms in LICENSE.txt
 
 # Frontend Design
 
+> Modified for lpgh-skills: description extended, this "In lpgh-skills" section and `DESIGN-PHASE.md` added; the guidance from "Approach this as the design lead…" on is unchanged from anthropics/skills (Apache-2.0).
+
 ## In lpgh-skills: design with the user, not for them
 
 1. **Read what exists first:** `DESIGN.md`, the design-system line in `docs/agents/project.md`, the project's theme/tokens and component library. An existing design system wins — extend it, don't start a parallel look.
 2. **Covered** by it → build by it, no questions.
-3. **Not covered** (new screen, component type, flow, redesign) and a user is reachable → run the design phase in [DESIGN-PHASE.md](DESIGN-PHASE.md): propose a direction, let the user decide, show real variants in the app when it matters, record the result in `DESIGN.md` and the spec's `## UI Design`.
+3. **Not covered** (new screen, component type, flow, redesign) and a user is reachable → run the design phase in [DESIGN-PHASE.md](DESIGN-PHASE.md): propose a direction, let the user decide, show real variants in the app when it matters, record the result in `DESIGN.md` and the spec's `## UI Design`. This applies inside and outside `/work`, at any risk level.
 4. **No user reachable** (ticket subagent) → never ask; follow `DESIGN.md` + spec, take the closest existing pattern for gaps, record it under the ticket's `## Decisions` and note an idea for the user.
 
-Build quality (components, state, accessibility, responsiveness) comes from `frontend-ui-engineering`; load both for UI tickets. The guidance below shapes every proposal and build.
+Build quality (components, state, accessibility, responsiveness) comes from `frontend-ui-engineering`; load both for UI tickets. Verify in a real browser with `webapp-testing`. The guidance below shapes every proposal and build.
 
 Approach this as the design lead at a design studio known for giving every client a distinct visual identity that is not mistaken for anyone else's. This client has already rejected proposals that felt cliché or templated, and is paying for a distinctive point of view: make deliberate, opinionated choices about palette, typography, and layout that are specific to this brief, and take aesthetic risk if justified.
 

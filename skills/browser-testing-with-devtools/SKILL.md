@@ -21,6 +21,12 @@ Use Chrome DevTools MCP to give your agent eyes into the browser. This bridges t
 
 **When NOT to use:** Backend-only changes, CLI tools, or code that doesn't run in a browser.
 
+## In lpgh-skills: precedence and fallback
+
+- **This skill = interactive debugging** in a session where the chrome-devtools MCP is configured and a user is present (performance traces, network inspection, live DOM/style debugging).
+- **Use `webapp-testing` instead** (headless Python Playwright) when the chrome-devtools MCP tools aren't available, when you run in a subagent (ticket implementation, milestone-review, hardening — no user to confirm with), or in omp. It is the default for user-level tests, screenshots and axe runs.
+- **The "confirm with the user" rules below apply only interactively.** In a subagent there is no one to confirm: don't run mutating JavaScript at all — drive the page like a user (click, type, navigate) via `webapp-testing`, stay on the project's localhost URL from `docs/agents/project.md`, and report anything suspicious in your result instead of asking.
+
 ## Setting Up Chrome DevTools MCP
 
 ### Installation
@@ -87,7 +93,7 @@ The JavaScript execution tool runs code in the page context. Constrain its use:
 - **No external requests.** Do not use JavaScript execution to make fetch/XHR calls to external domains, load remote scripts, or exfiltrate page data.
 - **No credential access.** Do not use JavaScript execution to read cookies, localStorage tokens, sessionStorage secrets, or any authentication material.
 - **Scope to the task.** Only execute JavaScript directly relevant to the current debugging or verification task. Do not run exploratory scripts on arbitrary pages.
-- **User confirmation for mutations.** If you need to modify the DOM or trigger side-effects via JavaScript execution (e.g., clicking a button programmatically to reproduce a bug), confirm with the user first.
+- **User confirmation for mutations.** If you need to modify the DOM or trigger side-effects via JavaScript execution (e.g., clicking a button programmatically to reproduce a bug), confirm with the user first (interactive sessions only — see "In lpgh-skills" above for subagents).
 
 ### Content Boundary Markers
 

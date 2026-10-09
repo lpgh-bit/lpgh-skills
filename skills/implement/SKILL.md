@@ -16,17 +16,17 @@ Read first: [`../../references/tickets.md`](../../references/tickets.md) — fie
 - **Ticket given** (`<effort>#NN`, a path, or a tracker id): Fetch the ticket including comments, the effort's `spec.md` (or spec issue), and the ticket's milestone entry in `milestones.md`. Earlier failure reports in `## Comments` are input — don't repeat the approach that failed.
 - **No ticket** (small change from the conversation): restate the change and its acceptance in two or three lines and unless you are 100% certain what the user wants, run `grill` until nothing about their intent is open (only when a user is reachable — a ticket subagent records the ambiguity in the ticket and stops instead). If it's bigger than one ticket's worth (several seams, more than ~5 files, needs design decisions), stop and suggest `/to-spec` → `/to-tickets`.
 
-Check the ticket is workable: `Status: ready` (or `claimed` by this run's caller), every `Blocked by` ticket `done`. If not, stop and say why.
+Check the ticket is workable: `Status: ready` (or `claimed` by this run's caller), every `Blocked by` ticket `done`. **Fix round:** when the brief says "fix round", the ticket is `in-review` with the reviewers' findings — accept it as is: no re-claim, no status reset; fix the findings in the working tree and return it `in-review`. Otherwise not workable → stop and say why.
 
 ## 2. Claim
 
-Set `Status: claimed` and save **before any work** (real tracker: also assign `@me`). Skip for no-ticket changes.
+Set `Status: claimed` and save **before any work** (real tracker: also assign `@me`). Skip for no-ticket changes and fix rounds.
 
 ## 3. Load context
 
 - Read the ticket's `Risk` and [`../../references/risk.md`](../../references/risk.md). No `Risk` line (or no ticket) → classify it yourself with the rubric and write it into the ticket. Add the skills that level requires.
-- Load **every skill named in the ticket's `Skills:` field** (`tdd` is the usual default) — user-invoked ones (e.g. `grill`) by reading `../<name>/SKILL.md`. Their rules apply for the whole run.
-- Read `docs/agents/project.md` for the test, single-test, typecheck, lint, build and run commands, and how a user runs the app. Missing → discover them from the repo (build files, CI config, README) and suggest `/init` in your final report.
+- Load **every skill named in the ticket's `Skills:` field** (`tdd` is the usual default) — they are model-invoked (`grill` included) and load normally; a user-invoked one would be read from `../<name>/SKILL.md`. Their rules apply for the whole run. In a ticket subagent `grill` can't reach the user: record the open questions in the ticket and stop.
+- Read `docs/agents/project.md` for the test, single-test, typecheck, lint, build and run commands (plus `check:fast` / `check:task` when the repo has a `CONSTRAINTS.md`), and how a user runs the app. Missing → discover them from the repo (build files, CI config, README) and suggest `/init` in your final report.
 - Use `CONTEXT.md` vocabulary; respect `docs/adr/`. Read the spec's **Testing Decisions** (agreed seams) and **Boundaries** (always / ask first / never). An "ask first" item stops the run for a human decision.
 
 ### Reuse first
@@ -35,12 +35,12 @@ Set `Status: claimed` and save **before any work** (real tracker: also assign `@
 
 ## 4. Build in thin increments
 
-Drive the `tdd` skill at the **pre-agreed seams** from the spec/ticket — behaviour-level tests through the public interface, one red → green → refactor cycle at a time. Don't invent new seams; if the agreed one turns out untestable, record why in the ticket and pick the next-highest seam.
+Drive the `tdd` skill at the **pre-agreed seams** from the spec/ticket — behaviour-level tests through the public interface, one red → green cycle at a time. Refactoring is not part of the loop (`tdd`): it happens only as a separate prefactoring step or ticket, or via `code-simplification`. Don't invent new seams; if the agreed one turns out untestable, record why in the ticket and pick the next-highest seam.
 
 Each increment:
 
 1. **Pick the smallest complete slice** — vertical through the stack where the ticket spans layers; the riskiest slice first when something is uncertain.
-2. **Red → green → refactor** via `tdd`.
+2. **Red → green** via `tdd`.
 3. **Verify:** typecheck and run the affected single test file(s). Lint if fast.
 4. **Stay green.** The project builds and existing tests pass after every increment. If an increment goes wrong and you can't see why quickly, revert the working tree to the last green state and take a smaller step (load `debugging` if the cause is unclear).
 
@@ -52,12 +52,21 @@ Discipline (details and examples: [REFERENCE.md](REFERENCE.md)):
 - **Rollback-friendly.** Additive over invasive; migrations come with their down path; don't delete and replace in one step.
 - **Safe defaults;** a feature flag only if the ticket ships something not yet user-ready.
 - Don't re-run an unchanged command for reassurance.
+- **Throwaway branches only via `git worktree add`** (e.g. `git worktree add ../<repo>-<slug> -b throwaway/<slug>`) — never switch or stash the shared working tree; remove the worktree when done.
+
+### Research and prototype tickets
+
+`Type: research` / `Type: prototype` tickets produce an answer, not feature code:
+
+- **research** — do the `research` work **inline** in this context (a subagent can't spawn a background agent); write the findings under the ticket's `## Answer` with sources.
+- **prototype** — build it in a **worktree** on a throwaway branch (`git worktree add`), per `prototype`; record the verdict under `## Answer` and the branch as a context pointer.
+- **Nothing is committed to the feature branch.** Resolve the ticket with the answer instead of a commit SHA (step 7 commit is skipped).
 
 ## 5. Verify the whole ticket
 
-1. Run the **full test suite** once, plus typecheck, lint and build.
+1. Run the **full test suite** once, plus typecheck, lint and build. If the repo has a `CONSTRAINTS.md`, run its `check:task` command from `docs/agents/project.md` and get it green — never by weakening the bar (`constraint-driven-development`).
 2. Tick off each **acceptance criterion** against evidence (a test, a command output).
-3. Run the ticket's **User-level test** through the real interface (CLI invocation, browser via `browser-testing-with-devtools` if loaded, game input) when feasible in this environment. If not feasible, say exactly why and what a human should run.
+3. Run the ticket's **User-level test** through the real interface (CLI invocation, browser: `webapp-testing` — headless Playwright — for every UI ticket; `browser-testing-with-devtools` only for interactive debugging when that MCP exists; game input) when feasible in this environment. If not feasible, say exactly why and what a human should run.
 4. Check the standing bar in [`../../references/definition-of-done.md`](../../references/definition-of-done.md).
 
 ## 6. Record decisions, then self-review

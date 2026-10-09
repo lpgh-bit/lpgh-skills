@@ -39,7 +39,8 @@ Every skill in lpgh-skills with one line on when it applies. `/to-tickets` picks
 | `api-and-interface-design` | adds/changes a public API, endpoint, type contract or module boundary. |
 | `frontend-ui-engineering` | builds or changes UI components, layout, state, accessibility. |
 | `frontend-design` | changes UI at all — always paired with `frontend-ui-engineering`; follows `DESIGN.md`, and runs the design phase with the user when a screen isn't covered. |
-| `browser-testing-with-devtools` | must be verified in a real browser (DOM, console, network, perf). |
+| `webapp-testing` | has web UI or needs a user-level browser test — headless Playwright, works in subagents and omp; screenshots, axe accessibility runs. **Default browser tool.** |
+| `browser-testing-with-devtools` | needs interactive browser debugging via the chrome-devtools MCP (DOM, console, network, perf traces); without that MCP or in a subagent use `webapp-testing`. |
 | `security-and-hardening` | touches untrusted input, auth, sessions, secrets, storage, third-party calls. |
 | `performance-optimization` | has a performance requirement or touches a hot path / queries. |
 | `observability-and-instrumentation` | adds logging, metrics, tracing or alerting. |
@@ -66,9 +67,11 @@ Every skill in lpgh-skills with one line on when it applies. `/to-tickets` picks
 | `test-engineer` | `milestone-review` (coverage gaps), `tdd` (test strategy) |
 | `web-performance-auditor` | `milestone-review` for web apps |
 
+Browser checks inside these flows (`implement` user-level test, `milestone-review` axis G, hardening axes 8 and 12, design-phase screenshots) run through `webapp-testing`.
+
 ## Choosing `Skills:` for a ticket
 
 1. Start with `tdd` for `feature`/`fix`/`refactor` tickets (`debugging` instead of or in addition for `fix` tickets whose cause is unknown).
-2. Add every implementation skill whose row matches what the ticket touches. Prefer 2–4 skills; more means the ticket is probably too big.
+2. Add every implementation skill whose row matches what the ticket touches (web UI tickets: `frontend-design`, `frontend-ui-engineering`, `webapp-testing`). Prefer 2–4 skills; more means the ticket is probably too big.
 3. `research` / `prototype` / `decision` tickets list the matching skill (`research`, `prototype`, `grill`).
 4. Add what the ticket's `Risk` level requires ([`risk.md`](risk.md)): `doubt-driven-development` for `high`/`critical`, plus `security-and-hardening` / `source-driven-development` / `performance-optimization` where their trigger applies.

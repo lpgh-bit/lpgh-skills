@@ -35,6 +35,11 @@ Run from the repo root unless noted. Leave a line as `-` when it doesn't exist.
 | Integration / e2e tests | |
 | Build | |
 | Run locally | |
+| `check:fast` (after each increment; from `CONSTRAINTS.md` if present) | |
+| `check:task` (at ticket end) | |
+| `check:full` (milestone review, hardening, CI) | |
+| Dependency audit | <e.g. `npm audit`, `pip-audit`, `osv-scanner scan source -r .`> |
+| Secret scan | <e.g. `gitleaks detect --redact --no-banner`> |
 
 ## How a user runs it
 
@@ -43,6 +48,7 @@ How a real user meets this product, used for user-level acceptance tests in `/mi
 - Entry point: <URL after "run locally" | CLI binary + typical invocation | game launch command | …>
 - Test accounts / seed data: <how to get them>
 - Tools for driving it as a user: <harness browser tool / Playwright / chrome-devtools MCP | real shell | xdotool + screenshots | manual only>
+- `webapp-testing` works (web apps): <verified with `python -m playwright install chromium` + a smoke run | uses the project's Playwright (`npx playwright …`) | not working: reason>
 
 ## Conventions
 

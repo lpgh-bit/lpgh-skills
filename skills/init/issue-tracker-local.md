@@ -25,6 +25,17 @@ Read the file. The user usually passes `<effort>#NN`, a path, or a number.
 
 Scan `.tickets/<effort>/issues/`: `Status: ready`, every `Blocked by` ticket `done`. Lowest number wins.
 
+## Wayfinding operations
+
+Used by `/wayfinder`. The **map** is a file with one **child** ticket file per question.
+
+- **Map**: `.tickets/<effort>/map.md` — the Notes / Decisions-so-far / Fog body.
+- **Child ticket**: `.tickets/<effort>/issues/NN-<slug>.md`, numbered from `01`, created through the `/to-tickets` append mode, with the question in the body. `Type:` is `research` · `prototype` · `decision` (grilling) · `chore` (task).
+- **Blocking**: a `Blocked by: NN, NN` line. A ticket is unblocked when every ticket it lists is `done`.
+- **Frontier**: scan `.tickets/<effort>/issues/` for tickets that are `ready`, unblocked and not claimed; lowest number wins.
+- **Claim**: set `Status: claimed` and save before any work.
+- **Resolve**: append the answer under `## Answer`, set `Status: done`, then append a context pointer (gist + link to the ticket) to `## Decisions so far` in `map.md`.
+
 ## Committed?
 
 `.tickets/` is in `.gitignore` — tickets are local working state, not part of the repo history.

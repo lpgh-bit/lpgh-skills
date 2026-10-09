@@ -4,6 +4,8 @@ Generate **several radically different UI variations** on a single route, switch
 
 If the question is about logic/state rather than what something looks like — wrong branch. Use [LOGIC.md](LOGIC.md).
 
+> **Design-phase override.** When this runs from the design phase ([`../frontend-design/DESIGN-PHASE.md`](../frontend-design/DESIGN-PHASE.md), usually in a variant-builder subagent): build and hand over as below, but screenshot every variant with `webapp-testing` to `.tickets/<effort>/design/<screen>-<variant>.png` (or the path the caller gives), return the URL, screenshot paths and the list of touched files, and never ask the user. Step 6 is replaced: after the decision, **delete** all variant code and the switcher; fold nothing into production (the chosen design is built through tickets with `tdd`); make **no** throwaway-branch commit.
+
 ## When this is the right shape
 
 - "What should this page look like?"
@@ -99,7 +101,7 @@ Surface the URL (and the `?variant=` keys). The user will flip through whenever 
 
 ### 6. Capture the answer and clean up
 
-Once a variant has won, capture the answer — which variant and why — then capture the prototype the way the [SKILL](SKILL.md) describes. Fold the winner into the real code and move the rest onto the throwaway branch, not into main:
+(Not in the design phase — see the override at the top.) Once a variant has won, capture the answer — which variant and why — then capture the prototype the way the [SKILL](SKILL.md) describes. Never switch the user's branch for this: commit the variants in a separate worktree (`git worktree add`, SKILL rule 7). Fold the winner into the real code and move the rest onto the throwaway branch, not into main:
 
 - **Sub-shape A** — fold the winner into the existing page; drop the losing variants and the switcher from main.
 - **Sub-shape B** — promote the winning variant to a real route; drop the throwaway route and the switcher from main.

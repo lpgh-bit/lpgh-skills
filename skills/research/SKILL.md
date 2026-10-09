@@ -5,6 +5,8 @@ description: Investigate a question against high-trust primary sources and captu
 
 Spin up a **background agent** to do the research, so you keep working while it reads.
 
+**Inside a subagent** (e.g. a ticket subagent working a `Type: research` ticket) you can't spawn one — do the same job inline and write the findings under the ticket's `## Answer`.
+
 Its job:
 
 1. Investigate the question against **primary sources** — official docs, source code, specs, first-party APIs — not a secondary write-up of them. Follow every claim back to the source that owns it.

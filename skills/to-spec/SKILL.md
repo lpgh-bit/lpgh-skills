@@ -9,7 +9,7 @@ hide: true
 
 Synthesise what the conversation and the codebase already say into one spec. **Don't re-interview what is already settled** — the grilling happened before (`/grill`, `/batch-grill`, or plain discussion). You ask the test-seam check in step 3 and approval at the end; any intent gap you find while writing goes through `grill` first — never guess it.
 
-Read first: [`../../references/tickets.md`](../../references/tickets.md) — where the spec lives and how it is published.
+Read first: [`../../references/tickets.md`](../../references/tickets.md) — where the spec lives and how it is published — and [`../../references/hardening.md`](../../references/hardening.md) for the `Scale` rule.
 
 Config: `docs/agents/issue-tracker.md` (which tracker), `CONTEXT.md` (domain vocabulary), `docs/adr/` (decisions), `docs/agents/project.md` (stack, commands, how a user runs the app). If any is missing, discover what you need from the repo and suggest `/init` at the end — don't block.
 
@@ -17,7 +17,9 @@ Config: `docs/agents/issue-tracker.md` (which tracker), `CONTEXT.md` (domain voc
 
 ### 1. Ground yourself
 
-Explore the repo enough to know the current state of the area you're specifying (skip if already done this session). Use the `CONTEXT.md` vocabulary throughout the spec. Respect ADRs in the area; if the conversation contradicts one, flag it in the spec under **Further Notes** rather than silently overriding.
+Explore the repo enough to know the current state of the area you're specifying (skip if already done this session).
+
+Read the effort's existing inputs if present: `.tickets/<effort>/handoff.md` (a session that handed off before the spec — read it first) and `.tickets/<effort>/map.md` with its wayfinder tickets (Decisions so far, each resolved ticket's `## Answer`) — those decisions are settled input, not questions to reopen. Read `.out-of-scope/` at the repo root: don't put anything recorded there into the spec without new reasons; list relevant entries under **Out of Scope**. Use the `CONTEXT.md` vocabulary throughout the spec. Respect ADRs in the area; if the conversation contradicts one, flag it in the spec under **Further Notes** rather than silently overriding.
 
 ### 2. Scope check
 
@@ -25,7 +27,7 @@ Most requests are one capability — skip to step 3. If the conversation bundles
 
 ### 3. Agree the test seams
 
-Sketch the seams at which the feature will be tested. Prefer existing seams to new ones; use the highest seam possible; if new seams are needed, propose them as high as you can. The fewer seams the better — the ideal is one.
+Sketch the seams at which the feature will be tested, in the `codebase-design` vocabulary. Prefer existing seams to new ones; use the **highest seam** possible — the interface of a **deep module** that hides the feature's complexity behind a small surface; if new seams are needed, propose them as high as you can and say which module gets deeper. The fewer seams the better — the ideal is one.
 
 Also sketch the **user-level acceptance**: how a user will exercise the finished feature through the real interface (browser, CLI invocation, game input, API call) — read "how a user runs the app" from `docs/agents/project.md`.
 
@@ -52,9 +54,14 @@ Per `tickets.md` **Publish spec**:
 
 Spec header starts `Status: draft`. Do not create tickets here.
 
+Header values (fixed, English — see `tickets.md`):
+
+- `Scale:` — propose `small` · `medium` · `large` per the rule in `hardening.md` (one level up when in doubt); the user confirms it at the approval gate. `large` turns on the full hardening suite for every milestone.
+- `UI design:` — `none` (no UI), `pending` (design phase needed) or `covered` (`DESIGN.md` already covers every screen). **Never write `approved`** — that is set only after the user approved the design phase.
+
 ### 6. Present and stop
 
-1. Summarise the spec in a few lines. **Open Questions** must be empty and **Assumptions** may only hold verified technical facts — anything else goes back through `grill` before you ask for approval.
+1. Summarise the spec in a few lines, including the proposed `Scale` (with the reason) for the user to confirm. **Open Questions** must be empty and **Assumptions** may only hold verified technical facts — anything else goes back through `grill` before you ask for approval.
 2. Ask the user to approve or request changes.
 3. **Stop.** Don't break it into tickets or write code in the same turn. On approval, set `Status: approved` (local) / comment "approved" (tracker).
 
@@ -69,6 +76,8 @@ End with: **Next: /to-tickets**
 
 Effort: <effort-slug>
 Status: draft
+Scale: small | medium | large
+UI design: none | pending | covered
 
 ## Problem Statement
 
@@ -117,7 +126,7 @@ This is what `/milestone-review` runs at the end.
 
 ## UI Design
 
-Only when the work has a user interface. Leave as `UI design: pending` — the design phase (`../frontend-design/DESIGN-PHASE.md`, run by `/work` after spec approval) fills it with the chosen direction, wireframes, per-screen states and copy decisions, and sets `UI design: approved`. If `DESIGN.md` / the design system already covers every screen, write `UI design: covered by DESIGN.md` and list which parts apply.
+Only when the work has a user interface (no UI → header `UI design: none`, omit this section). Leave the header as `UI design: pending` — the design phase (`../frontend-design/DESIGN-PHASE.md`, run by `/work` after spec approval) fills it with the chosen direction, wireframes, per-screen states and copy decisions, and sets `UI design: approved`. If `DESIGN.md` / the design system already covers every screen, set the header to `UI design: covered` and list here which `DESIGN.md` parts apply.
 
 ## Boundaries
 
@@ -148,7 +157,7 @@ The spec is the source of truth `/implement`, `/review` and `/milestone-review` 
 
 ## Red flags
 
-- Asking the user a string of clarifying questions — that's `/grill`'s job; synthesise or record an Open Question.
+- Asking the user a string of clarifying questions — that's `grill`'s job; synthesise what's settled and send real gaps through `grill`. Open Questions must be empty at approval, never a parking spot.
 - Writing the spec and starting tickets or code in the same turn.
 - Vague success criteria ("works well", "fast") with no measurable condition.
 - No user-level acceptance, or one that only runs unit tests.

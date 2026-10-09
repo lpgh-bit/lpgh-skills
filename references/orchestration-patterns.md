@@ -2,7 +2,7 @@
 
 Reference catalog of agent orchestration patterns this repo endorses, plus anti-patterns to avoid. Read this before adding a new slash command that coordinates multiple personas, or before introducing a new persona that "wraps" existing ones.
 
-The governing rule: **the user (or a slash command) is the orchestrator. Personas do not invoke other personas.** Skills are mandatory hops inside a persona's workflow.
+The governing rule: **the user, or the main session running a slash command with the user's gates, is the orchestrator. Personas do not invoke other personas, and subagents never spawn subagents.** Skills are mandatory hops inside a persona's workflow.
 
 ---
 
@@ -32,12 +32,12 @@ user → code-reviewer → report → user
 A slash command that wraps one persona with the project's skills. Saves the user from re-explaining the workflow every time.
 
 ```
-/review → code-reviewer (with review skill) → report
+/implement → one fresh subagent (with tdd + the ticket's skills) → report
 ```
 
 **Use when:** the same single-persona invocation happens repeatedly with the same setup.
 
-**Examples in this repo:** `/review`, `tdd`, `code-simplification`.
+**Examples in this repo:** `/implement`, `tdd`, `code-simplification`.
 
 **Cost:** same as direct invocation. The slash command is just a saved prompt.
 
@@ -61,7 +61,11 @@ Multiple personas operate on the same input concurrently, each producing an inde
 - The merge step is small enough to stay in the main context
 - Wall-clock latency matters
 
-**Examples in this repo:** `/ship`.
+**Examples in this repo:**
+- `/review` — three axes (Standards, Spec, Quality) as parallel subagents; aggregated side by side, not reranked.
+- `/milestone-review` — axes A–F as parallel subagents (`test-engineer`, `security-auditor`, `web-performance-auditor`, …), G (user-level test) run by the main session, findings merged into fix tickets.
+- `/ship` — `code-reviewer` + `security-auditor` + `test-engineer` in one turn, merged into a GO/NO-GO with a rollback plan.
+- The hardening suite (`references/hardening.md`) — all 12 checks as fresh-context subagents, each dispatched by the main session.
 
 **Cost:** N parallel sub-agent contexts + one merge turn. Higher than direct invocation, but faster wall-clock and produces better reports because each sub-agent stays focused on its single perspective.
 
@@ -75,21 +79,30 @@ If any answer is "no," fall back to direct invocation or a single-persona comman
 
 ---
 
-### 4. Sequential pipeline as user-driven slash commands
+### 4. Gated main-session orchestrator (`/work`)
 
-The user runs slash commands in a defined order, carrying context (or commit history) between them. There is no orchestrator agent — the user IS the orchestrator.
+A user-invoked command whose **main session** walks the lifecycle and dispatches each building or reviewing step to a fresh subagent — stopping at user gates where judgment matters. The user can also run every step by hand; `/work` just saves the bookkeeping.
 
 ```
-user runs:  /to-spec  →  /to-tickets  →  /implement (tdd)  →  /review  →  /milestone-review  →  /ship
+/work (main session)
+  grill → to-spec ─[GATE 1: spec]→ design ─[GATE: UI design]→ to-tickets ─[GATE 2: tickets]→
+  per ticket: fresh implementer subagent → fresh reviewer subagents (by risk) → commit
+  per milestone: milestone-review fan-out ─[GATE 3: milestone]→ … → ship (GO/NO-GO, no deploy without OK)
 ```
+
+**Rules that make it safe:**
+- **Gates are hard stops.** Spec, UI design, tickets and every milestone wait for the user's approval; push/PR/merge/deploy only on an explicit OK.
+- **Subagents get file paths, not paraphrases.** A ticket brief points at `.tickets/<effort>/issues/NN-*.md`, `spec.md`, `docs/agents/project.md` and the checklists; the subagent reads them itself. The orchestrator never summarises the spec into the prompt.
+- **No nesting.** Only the main session dispatches. Implementers, reviewers and agents from `agents/` never spawn further subagents; anything that must be fresh-context is dispatched by the main session.
+- **Lean orchestrator.** The main session reads ≤ 150-word reports and ticket state, never the implementation details.
 
 **Use when:** the workflow has dependencies (each step needs the previous step's output) and human judgment between steps adds value.
 
-**Examples in this repo:** the entire DEFINE → PLAN → BUILD → VERIFY → REVIEW → SHIP lifecycle.
+**Examples in this repo:** `/work` over `to-spec` → `to-tickets` → `implement` → `review` → `milestone-review` → `ship`; each step also runs standalone.
 
-**Cost:** one sub-agent context per step. Free for the orchestration layer because there is no orchestrator agent.
+**Cost:** one fresh subagent per ticket and per review axis; the orchestration layer costs a small main-session context because it holds state and file paths, not content.
 
-**Why not automate it:** an LLM "lifecycle orchestrator" would (a) lose nuance between steps because it has to summarize for hand-off, (b) skip the human checkpoints that catch wrong-direction work early, and (c) double the token cost via paraphrasing turns.
+**Why it isn't the anti-pattern:** the failure modes of an LLM lifecycle orchestrator — losing nuance through hand-off summaries, skipping human checkpoints, paraphrasing turns — are designed out: artifacts on disk are the hand-off, gates stay with the user, and there is exactly one orchestration level.
 
 ---
 
@@ -134,7 +147,7 @@ Claude Code has two parallelism primitives. Pattern 3 (parallel fan-out with mer
 | Status | Stable | Experimental — requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` |
 | Cost | Lower | Higher — each teammate is a separate Claude instance |
 
-**The personas in this repo work in both modes.** When spawned as subagents (e.g. by `/ship`), they report findings to the main session. When spawned as teammates (`Spawn a teammate using the security-auditor agent type…`), they can challenge each other's findings directly. The persona definition is the same; only the spawning context changes.
+**The personas in this repo work in both modes.** When spawned as subagents (e.g. by `/ship`, `/milestone-review` or the hardening suite), they report findings to the main session. When spawned as teammates (`Spawn a teammate using the security-auditor agent type…`), they can challenge each other's findings directly. The persona definition is the same; only the spawning context changes.
 
 One subtlety: the `skills` and `mcpServers` frontmatter fields in a persona are honored when it runs as a subagent but **ignored when it runs as a teammate** — teammates load skills and MCP servers from your project and user settings, the same as a regular session. If a persona depends on a specific skill or MCP server being loaded, configure it at the session level so it's available in both modes.
 
@@ -167,7 +180,7 @@ The fields that DO work in plugin agents are: `name`, `description`, `tools`, `d
 
 ### Spawning multiple subagents in parallel
 
-In Claude Code, parallel fan-out (Pattern 3) requires issuing **multiple Agent tool calls in a single assistant turn**. Sequential turns serialize execution. `/ship` calls this out explicitly. Any new orchestrator command should do the same.
+In Claude Code, parallel fan-out (Pattern 3) requires issuing **multiple Agent tool calls in a single assistant turn**. Sequential turns serialize execution. `/review`, `/milestone-review`, `/ship` and the hardening suite call this out explicitly. Any new orchestrator command should do the same.
 
 ---
 
@@ -272,7 +285,7 @@ Do **not** rebuild this as a `/debug` slash command that fans out subagents. Sub
 
 - Production-bound verdict on a known diff → use `/ship` (subagents).
 - One specialist perspective on one artifact → direct persona invocation.
-- Sequential lifecycle (spec → plan → build) → user-driven slash commands (Pattern 4).
+- Sequential lifecycle (spec → tickets → build) → `/work` or the user running the steps (Pattern 4).
 - Read-heavy research with a small digest → built-in `Explore` subagent.
 
 Reach for Agent Teams only when teammates **need** to challenge each other to produce the right answer.
@@ -286,7 +299,7 @@ Reach for Agent Teams only when teammates **need** to challenge each other to pr
 A persona whose job is to decide which other persona to call.
 
 ```
-/work → router-persona → "this needs a review" → code-reviewer → router (paraphrases) → user
+/dispatch → router-persona → "this needs a review" → code-reviewer → router (paraphrases) → user
 ```
 
 **Why it fails:**
@@ -295,7 +308,7 @@ A persona whose job is to decide which other persona to call.
 - The user already knew they wanted a review; they could have called `/review` directly
 - Replicates the work that slash commands and intent mapping in `AGENTS.md` already do
 
-**What to do instead:** add or refine slash commands. Document intent → command mapping in `AGENTS.md`.
+**What to do instead:** add or refine slash commands. Document intent → command mapping in `AGENTS.md`. (`/work`'s routing table is different: the main session routes and then *runs* the skill itself or dispatches with file paths — there is no router persona in between.)
 
 ---
 
@@ -313,17 +326,17 @@ A `code-reviewer` that internally invokes `security-auditor` when it sees auth c
 
 ---
 
-### C. Sequential orchestrator that paraphrases
+### C. Orchestrator that skips gates, paraphrases context, or nests subagents
 
-An agent that calls `/to-spec`, then `/to-tickets`, then `/implement`, etc. on the user's behalf.
+An agent that runs `to-spec` → `to-tickets` → `implement` … on the user's behalf **without stopping at the gates**, hands each step a summary it wrote instead of the files, or runs as a subagent that spawns its own subagents.
 
 **Why it fails:**
-- Loses the human checkpoints that catch wrong-direction work
-- Each hand-off summarizes context — accumulated drift over a long pipeline
-- Doubles token cost: orchestrator turn + sub-agent turn for every step
+- Skipped gates lose the human checkpoints that catch wrong-direction work
+- Paraphrased hand-offs drift over a long pipeline and double token cost
+- Nested orchestration can't exist on Claude Code (subagents can't spawn subagents) and, where it can, multiplies summarisation loss
 - Removes user agency at exactly the points where judgment matters most
 
-**What to do instead:** keep the user as the orchestrator. Document the recommended sequence in `README.md` and let users invoke it.
+**What to do instead:** Pattern 4 — orchestrate from the main session, stop at every gate, pass file paths, keep depth at one.
 
 ---
 
@@ -336,7 +349,7 @@ An agent that calls `/to-spec`, then `/to-tickets`, then `/implement`, etc. on t
 - Debugging becomes a multi-level investigation
 - The leaf personas lose context to multiple summarization steps
 
-**What to do instead:** keep the orchestration depth at most 1 (slash command → personas). The merge happens in the main agent.
+**What to do instead:** keep the orchestration depth at most 1 (main session → subagents/personas). The merge happens in the main session.
 
 ---
 
@@ -350,7 +363,7 @@ Is the work one perspective on one artifact?
 └── No  → Will the same composition repeat?
          ├── No  → Direct invocation, ad hoc. Stop.
          └── Yes → Are sub-tasks independent?
-                  ├── No  → Sequential slash commands run by user (Pattern 4).
+                  ├── No  → Gated main-session orchestrator or the user running the steps (Pattern 4).
                   └── Yes → Parallel fan-out with merge (Pattern 3).
                            Validate against the checklist above.
                            If any check fails → fall back to single-persona command (Pattern 2).

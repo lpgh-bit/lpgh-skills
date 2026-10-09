@@ -24,7 +24,7 @@ Apply this skill when:
 - An agent is producing volume nobody is reading line by line
 - CI has checks but nobody can say which ones block a merge and which ones are decoration
 - Coverage, performance, or accessibility numbers get argued about per-PR instead of decided once
-- You're about to run `/build auto` or any autonomous loop, and the only thing standing between it and main is a test suite the agent also wrote
+- You're about to run `/work` or any autonomous loop, and the only thing standing between it and main is a test suite the agent also wrote
 
 **When NOT to use:**
 
@@ -32,6 +32,13 @@ Apply this skill when:
 - One-off scripts, spikes, throwaway prototypes
 - The user wants a code review right now (`review`) or a CI pipeline built (`ci-cd-and-automation`)
 - Pre-product-market-fit code with a two-week expected lifetime — the floor below is still worth it, the rest isn't
+
+## In lpgh-skills
+
+- `CONSTRAINTS.md` is offered by `/init` as an optional step ("Quality bar" — recommended for production repos); this skill runs then.
+- Its `check:fast` / `check:task` / `check:full` commands are mirrored as rows in `docs/agents/project.md`, so every skill finds them in one place. `CONSTRAINTS.md` stays canonical.
+- `implement` runs `check:task` before a ticket is done; `review` and `milestone-review` read `CONSTRAINTS.md` as a standards source.
+- With the hardening suite on ([`../../references/hardening.md`](../../references/hardening.md)), item #10 runs `check:full` plus the five "weakened bar" moves from Step 6 against the fixed point.
 
 ## Loading Constraints
 
@@ -179,7 +186,7 @@ Add each one to the project's own script so it's reproducible without an agent:
 }
 ```
 
-That mapping matters more than the tools. `check:fast` is what runs after an edit, `check:task` when the agent thinks it's done, `check:full` in CI.
+That mapping matters more than the tools. `check:fast` is what runs after each `implement` increment, `check:task` when the ticket is done, `check:full` in `milestone-review`, the hardening suite and CI.
 
 The commands now live in two places — the `Checked by` column in `CONSTRAINTS.md` and these scripts. `CONSTRAINTS.md` is the canonical source: it carries the reason alongside each command and it shows up in review. The scripts are convenience wrappers that must mirror it, not a second source of truth; if they drift, the file wins.
 
@@ -187,12 +194,11 @@ The commands now live in two places — the `Checked by` column in `CONSTRAINTS.
 
 The single biggest mistake is running everything everywhere. A check that stalls the agent gets switched off, and a gate people switched off is worse than no gate, because the bar still looks like it exists.
 
-| Phase | Command | What runs | Budget |
+| Tier | Where it runs | What runs | Budget |
 |-------|---------|-----------|--------|
-| BUILD | `/implement` | Types, lint, secrets, the floor | under 5s, changed file only |
-| VERIFY | `tdd` | Related tests, coverage on changed lines | under 90s |
-| REVIEW | `/review` | Everything, plus the guards below | minutes |
-| SHIP | `/ship` | Direction checks, no regressions | CI |
+| `check:fast` | after each `implement` / `tdd` increment | Types, lint, secrets, the floor | under 5s, changed files only |
+| `check:task` | at ticket end (`implement`, before the commit / review) | `check:fast` + related tests, coverage on changed lines | under 90s |
+| `check:full` | `milestone-review` (axis C), hardening #10, `ship`, CI | Everything, plus the guards below; direction checks, no regressions | minutes |
 
 Two rules that keep this tolerable:
 

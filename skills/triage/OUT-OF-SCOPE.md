@@ -5,6 +5,10 @@ The `.out-of-scope/` directory in a repo stores persistent records of rejected f
 1. **Institutional memory** — why a feature was rejected, so the reasoning isn't lost when the issue is closed
 2. **Deduplication** — when a new issue comes in that matches a prior rejection, the skill can surface the previous decision instead of re-litigating it
 
+## Pack-wide
+
+`.out-of-scope/` sits at the repo root and is **committed** (it survives the gitignored `.tickets/`). It is shared by the whole pack (`references/tickets.md`): `grill`, `batch-grill`, `to-spec`, `to-tickets` and every skill proposing ideas read it before proposing scope. Triage keeps writing it for rejected requests; ideas from an effort's `ideas.md` that the user rejects as a **lasting no** (not just "not now") are recorded here too, in the same format, with the idea's `I-NN` and effort as the request link.
+
 ## Directory structure
 
 ```

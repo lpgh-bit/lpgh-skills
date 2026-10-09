@@ -5,12 +5,12 @@ Read when choosing how to slice a ticket, or when an increment feels too big.
 ## The increment cycle
 
 ```
-slice ──► red ──► green ──► refactor ──► verify (typecheck + single tests) ──► next slice
-                                              │
-                                   red/unclear│──► revert to last green, smaller step
+slice ──► red ──► green ──► verify (typecheck + single tests) ──► next slice
+                                  │
+                       red/unclear│──► revert to last green, smaller step
 ```
 
-Increments are verification checkpoints, not commits: the ticket lands as **one** commit. Keep each increment small enough that reverting the working tree to the previous green state costs minutes.
+No refactor step inside the cycle — refactoring is a separate prefactoring step/ticket or `code-simplification`. Increments are verification checkpoints, not commits: the ticket lands as **one** commit. Keep each increment small enough that reverting the working tree to the previous green state costs minutes.
 
 ## Slicing strategies
 

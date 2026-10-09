@@ -13,6 +13,7 @@ idea ─► grill ─► to-spec [G1] ─► to-tickets [G2] ─► milestone lo
 - Many questions at once preferred → `batch-grill`.
 - A question needs a runnable answer → `prototype` (throwaway), bring the answer back.
 - Facts needed from docs/APIs → `research` (background), feed the result into `grill`.
+- Hard / important / large → the full hardening suite (`references/hardening.md`) switches on via `Risk` or `Scale: large`.
 - Small, obvious change (≤ one ticket) → `implement` directly, no spec.
 - New UI or a redesign without a spec → `frontend-design` design phase with the user first, then `implement` (or the main flow if it's bigger).
 - Context getting full → `handoff`, continue in a fresh session with `/work <effort>`.
@@ -22,13 +23,17 @@ idea ─► grill ─► to-spec [G1] ─► to-tickets [G2] ─► milestone lo
 ```
 Task arrives
  ├─ Not 100% sure what the user wants ───────► grill (until nothing is open), then route
- ├─ Something broke / failing test / flake ──► debugging ─► fix ticket (to-tickets append) ─► implement
+ ├─ Something broke / failing test / flake ──► debugging (orchestrated: loop + hypotheses) ─► fix ticket (to-tickets append) ─► implement in a subagent
  ├─ Incoming reports piling up ──────────────► triage (not for tickets to-tickets made)
  ├─ Huge, foggy effort ──────────────────────► wayfinder ─► (map clear) ─► to-spec
  ├─ Review a branch / PR ────────────────────► review
  ├─ Codebase health, spare time ─────────────► improve-codebase-architecture ─► grill
  ├─ Merge/rebase conflict ───────────────────► resolve-conflicts
- ├─ Deploying / launching ───────────────────► ship
+ ├─ Deploying / launching ───────────────────► ship (GO/NO-GO, rollback plan)
+ ├─ Interactive browser debugging ───────────► browser-testing-with-devtools (chrome-devtools MCP) — headless checks: webapp-testing
+ ├─ Context bloated / quality degrading ─────► context-engineering, then handoff
+ ├─ Too complex / needs simplifying ─────────► code-simplification
+ ├─ Hand off to a background agent now ──────► claude-handoff (Claude Code)
  ├─ Removing or replacing a system ──────────► deprecation-and-migration ─► to-tickets (expand–contract)
  ├─ Quality bar not written down ────────────► constraint-driven-development
  ├─ CI/CD pipeline work ─────────────────────► ci-cd-and-automation
@@ -42,7 +47,7 @@ Task arrives
 
 ## While building (load alongside implement)
 
-UI → `frontend-ui-engineering` + `frontend-design` (design phase with the user when `DESIGN.md` doesn't cover it) · API/contracts → `api-and-interface-design` · module shape → `codebase-design` · untrusted input/auth → `security-and-hardening` · hot paths → `performance-optimization` · framework APIs → `source-driven-development` · high stakes/unfamiliar code → `doubt-driven-development` · browser verification → `browser-testing-with-devtools` · domain terms/decisions → `domain-docs` · agent context setup → `context-engineering` · git/release → `git-workflow-and-versioning`.
+UI → `frontend-ui-engineering` + `frontend-design` + `webapp-testing` (design phase with the user when `DESIGN.md` doesn't cover it) · API/contracts → `api-and-interface-design` · module shape → `codebase-design` · untrusted input/auth → `security-and-hardening` · hot paths → `performance-optimization` · framework APIs → `source-driven-development` · high stakes/unfamiliar code → `doubt-driven-development` · browser verification → `browser-testing-with-devtools` · domain terms/decisions → `domain-docs` · agent context setup → `context-engineering` · git/release → `git-workflow-and-versioning`.
 
 ## Typical short chains
 

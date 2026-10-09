@@ -116,6 +116,8 @@ A single-model reviewer shares blind spots with the original author — a colder
 
 **Interactive sessions: always offer. Never silently skip.**
 
+**In lpgh-skills** the offer follows [`../../references/risk.md`](../../references/risk.md) and [`../../references/hardening.md`](../../references/hardening.md) (#6): the main session offers a cross-model second opinion **whenever the hardening suite is on** — a ticket with `Risk: high`/`critical`, or an effort with `Scale: large` (in every milestone review and in `ship`). The offer goes to the user from the main session; a ticket subagent never asks.
+
 **Step 1: Ask the user**
 
 After the single-model review in Step 3 above, but before RECONCILE, pause and ask:

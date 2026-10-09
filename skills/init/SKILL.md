@@ -19,7 +19,10 @@ Output:
 | `docs/agents/project.md` | stack, commands, how a user runs the product |
 | `.gitignore` entry | `.tickets/` |
 | `## Agent skills` block | in `AGENTS.md` and/or `CLAUDE.md` |
+| `CONSTRAINTS.md` (optional) | the project's quality bar, via `constraint-driven-development` |
 | hooks (optional) | `.claude/settings*.json` + `.claude/hooks/lpgh/` |
+
+Not created by `/init`: `.out-of-scope/` at the repo root (committed, not gitignored) holds lasting rejections of ideas/requests; skills create it lazily the first time the user says "never". Mention it in the summary so the user knows it exists.
 
 Templates live next to this file. The ticket protocol they implement is [`../../references/tickets.md`](../../references/tickets.md).
 
@@ -52,11 +55,13 @@ Read what exists; don't assume.
 
 **C. Domain docs.** Default **single-context** (`CONTEXT.md` + `docs/adr/` at root) — write without asking. Offer **multi-context** (`CONTEXT-MAP.md` → per-context `CONTEXT.md`) only with monorepo signals. Don't create `CONTEXT.md`/ADRs now — `domain-docs` creates them lazily.
 
-**D. Project profile.** Present the filled `project.md` draft: stack, every command (verified / unverified), product kind, **how a user runs it** and which tool can drive it as a user (harness browser tool, Playwright, chrome-devtools MCP, real shell, xdotool + screenshots, or manual only). Ask the user to correct gaps.
+**D. Project profile.** Present the filled `project.md` draft: stack, every command (verified / unverified) incl. dependency audit and secret scan, product kind, **how a user runs it** and which tool can drive it as a user (harness browser tool, Playwright, chrome-devtools MCP, real shell, xdotool + screenshots, or manual only). For web apps verify that `webapp-testing` works (`python -m playwright install chromium` and a smoke run, or the project's own Playwright) and record the result. Ask the user to correct gaps.
 
 **E. Agent block.** Which file(s): if one of `AGENTS.md`/`CLAUDE.md` exists, edit that one; if both exist, edit both; if neither, recommend `AGENTS.md` (read by omp and most harnesses) plus a one-line `CLAUDE.md` containing `@AGENTS.md` for Claude Code — ask. Never duplicate an existing block; update it in place.
 
-**F. Hooks (optional).** Read [hooks.md](hooks.md). In Claude Code ask whether to register `sdd-cache` and/or `simplify-ignore` (recommend: no, unless the user uses `source-driven-development` or `code-simplification` a lot). In omp say they're Claude-Code-only and skip.
+**F. Hooks (optional).** Read [hooks.md](hooks.md). In Claude Code ask whether to register `sdd-cache` and/or `simplify-ignore` (recommend: no, unless the user uses `source-driven-development` or `code-simplification` a lot). Before offering `simplify-ignore`, state its real scope from hooks.md (filters every `Read`, placeholders on disk until `Stop`) — recommend **no** in repos where `/work` runs tests or commits mid-session. In omp say they're Claude-Code-only and skip.
+
+**G. Quality bar (optional).** If there is no `CONSTRAINTS.md`, offer to run `constraint-driven-development` (recommended for production repos; skip for prototypes and throwaway code). Its `check:fast` / `check:task` / `check:full` commands go into `project.md`'s Commands table; existing `CONSTRAINTS.md` → just mirror its commands.
 
 ## 3. Confirm
 
@@ -90,4 +95,4 @@ Don't commit; tell the user which files changed.
 
 ## 5. Done
 
-Summarise what was written and what's unverified. Next steps (write them with the harness prefix — Claude Code `/lpgh-skills:…`, omp `/skill:…`): `work <idea>` to start, or `grill` to sharpen an idea first. Re-run `init` to switch trackers or refresh the profile; small tweaks are just edits to `docs/agents/*.md`.
+Summarise what was written and what's unverified, and mention `.out-of-scope/` (created lazily, committed). Next steps (write them with the harness prefix — Claude Code `/lpgh-skills:…`, omp `/skill:…`): `work <idea>` to start, or `grill` to sharpen an idea first. Re-run `init` to switch trackers or refresh the profile; small tweaks are just edits to `docs/agents/*.md`.

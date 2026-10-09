@@ -1,14 +1,28 @@
 # Accessibility Checklist
 
-Quick reference for WCAG 2.1 AA compliance. Use alongside the `frontend-ui-engineering` skill.
+Quick reference for WCAG 2.1 AA compliance. Use alongside the `frontend-ui-engineering` skill; `milestone-review` and the hardening suite (axis 8, [`hardening.md`](hardening.md)) run the [automated + manual pass](#automated--manual-pass).
 
 ## Table of Contents
 
+- [Automated + manual pass](#automated--manual-pass)
 - [Essential Checks](#essential-checks)
 - [Common HTML Patterns](#common-html-patterns)
 - [Testing Tools](#testing-tools)
 - [Quick Reference: ARIA Live Regions](#quick-reference-aria-live-regions)
 - [Common Anti-Patterns](#common-anti-patterns)
+
+## Automated + manual pass
+
+Run on every new or changed screen and its key states (empty, loading, error, open dialog), at desktop and mobile width. Works headless in a subagent — never ask the user; a step that can't run is reported as **not run** with the reason.
+
+1. **Automated (axe):** with `webapp-testing`, inject axe-core and run it with tags `wcag2a, wcag2aa, wcag21a, wcag21aa` (snippet in `../skills/webapp-testing/SKILL.md`). Any violation on new UI is a finding; list it with rule id, impact and selector.
+2. **Keyboard-only walk:** drive the flow with `page.keyboard.press("Tab")` / `Enter` / `Escape` only. Check every control is reachable in visual order, focus is visible (screenshot the focused state), no traps, dialogs trap and return focus, the skip link works.
+3. **Contrast:** axe covers text; additionally check non-text UI (borders of inputs, focus rings, icons, chart colours) ≥ 3:1 against the `DESIGN.md` tokens, and that state isn't shown by colour alone.
+4. **Reduced motion:** `browser.new_context(reduced_motion="reduce")` — animations stop or become non-moving fades, nothing is lost.
+5. **Screen-reader labels:** `page.accessibility.snapshot()` (or `locator.aria_snapshot()`) — every control has a meaningful name and role, headings form an outline, live regions announce status/errors. A real screen-reader pass (Orca/NVDA/VoiceOver) is for the human checklist when the milestone is user-facing.
+6. **Zoom/reflow:** 320 px width and 200 % text zoom without horizontal scroll or clipped content.
+
+Record results per screen: pass / finding (with evidence) / not run (reason).
 
 ## Essential Checks
 

@@ -57,6 +57,7 @@ Ticket fields from `references/tickets.md` map onto this tracker like this:
 | `Milestone` | native milestone named `<effort> M1 — <name>`: `gh issue create --milestone "<M1 name>"` (create the milestone once via `gh api repos/{owner}/{repo}/milestones -f title=...`) |
 | `Blocked by` | native blocking links (see Wayfinding operations), else a `Blocked by: #n, #n` line |
 | `Skills`, `Source` | first lines of the issue body: `Skills: ...` / `Source: ...` |
+| Parent | every ticket body starts with a `## Parent` section linking the effort's spec issue (`#<spec>`) — the spec is the parent; additionally make the ticket a native sub-issue of the spec issue (`gh api` on the sub-issues endpoint) where enabled. Wayfinder child tickets link the map issue instead. Never close or modify the parent from a ticket. |
 | Effort | label `effort:<slug>`; the spec is an issue labelled `spec` + `effort:<slug>` |
 | `milestones.md` | the native milestone descriptions (goal, acceptance, user-level test) |
 

@@ -19,19 +19,21 @@ Read first:
 ## Modes
 
 - **Plan mode** (default; user or `/work` invokes it with a spec, plan or conversation) — full process below, with the approval quiz.
-- **Append mode** (another skill hands over a list of items for an existing effort) — skip steps 1–4. For each item fill the fields, pick `Risk` and `Skills:` (steps 3b–c), number after the effort's highest ticket, publish (step 5). No quiz unless the caller asks for one. Callers supply: title, what to build, acceptance criteria, `Type`, `Risk` (else classify it), `Severity` (fix), `Milestone`, `Blocked by`, `Source`.
+- **Append mode** (another skill hands over a list of items for an existing effort) — skip steps 1–4. For each item fill the fields, pick `Risk` and `Skills:` (steps 3b–c), number after the effort's highest ticket, publish (step 5), then **append** the new numbers to the target milestone's `Tickets:` line in `milestones.md` — edit only that line, never rewrite or reorder the file. No quiz unless the caller asks for one. Callers supply: title, what to build, acceptance criteria, `Type`, `Risk` (else classify it), `Severity` (fix), `Milestone`, `Blocked by`, `Source`.
 
 ## Plan mode
 
 ### 1. Gather context
 
-Work from the conversation. If given a reference (effort slug, spec path, issue id), fetch it with all comments. Read `docs/agents/project.md`, `CONTEXT.md` and ADRs in the area. Use the glossary's vocabulary in titles.
+Work from the conversation. If given a reference (effort slug, spec path, issue id), fetch it with all comments. Read `docs/agents/project.md`, `CONTEXT.md` and ADRs in the area, and `.out-of-scope/` at the repo root — don't propose tickets for anything recorded there without new reasons. Use the glossary's vocabulary in titles.
 
-If the effort already has open tickets for *different* work, stop and ask — never overwrite or renumber another plan's tickets.
+The spec must be `Status: approved` with `UI design` `none`, `covered` or `approved`. `UI design: pending` → stop: the design gate comes first.
+
+If the effort already has open tickets for *different* work — tickets not `done` that aren't this effort's wayfinder tickets (`research`/`prototype`/`decision`/`chore` children of `map.md`) — stop and ask; never overwrite or renumber another plan's tickets. Wayfinder tickets may already occupy `01`…: number the new tickets after the highest existing ticket in the effort.
 
 ### 2. Explore and find prefactoring
 
-Explore the code the work touches. Note **existing code to reuse** (modules, helpers, components, patterns) and name it in each ticket's `## Notes` (by module/concept, not file path) so the implementer extends it instead of building a parallel solution. Look for **prefactoring** — "make the change easy, then make the easy change" — and put it first. Note risks and unknowns; schedule the riskiest slices early (fail fast).
+Explore the code the work touches. Note **existing code to reuse** (modules, helpers, components, patterns) and name it in each ticket's `## Notes` (by module/concept, not file path) so the implementer extends it instead of building a parallel solution. Look for **prefactoring** — "make the change easy, then make the easy change" — and put it first. Judge it with the `codebase-design` vocabulary: a shallow module that should be **deepened**, a seam in the wrong place (put it at the highest seam that lets the change land behind one interface), code that fails the **deletion test** (removing it would only move complexity to its callers, or nothing would notice). Name prefactoring tickets in those terms. Note risks and unknowns; schedule the riskiest slices early (fail fast).
 
 ### 3. Draft vertical slices
 
@@ -47,7 +49,7 @@ Explore the code the work touches. Note **existing code to reuse** (modules, hel
 
 **a. Blocking edges.** Each ticket lists only the tickets that genuinely gate it. Unblocked tickets can start at once.
 
-**b. Skills.** Every ticket that changes UI gets `frontend-design` **and** `frontend-ui-engineering`, and its `## Notes` name the `DESIGN.md` parts and the spec's `## UI Design` screen it implements. If the spec has UI but `UI design` isn't `approved`/`covered`, stop — the design gate comes first. For each ticket choose from the *Implementation skills* table in the catalog, following its "Choosing `Skills:`" rules — `tdd` by default for code tickets, plus every skill whose row matches what the ticket touches, typically 2–4.
+**b. Skills.** Every ticket that changes UI gets `frontend-design`, `frontend-ui-engineering` **and** `webapp-testing` (headless browser for its user-level test), and its `## Notes` name the `DESIGN.md` parts and the spec's `## UI Design` screen it implements. If the spec has UI but `UI design` isn't `approved`/`covered` (e.g. `pending`), stop — the design gate comes first. Every ticket that adds an endpoint, background job or external call in a service gets `observability-and-instrumentation`. For each ticket choose from the *Implementation skills* table in the catalog, following its "Choosing `Skills:`" rules — `tdd` by default for code tickets, plus every skill whose row matches what the ticket touches, typically 2–4.
 
 **c. Risk.** Classify each ticket with [`../../references/risk.md`](../../references/risk.md) — highest matching row wins, one level up when in doubt — and add the skills that level requires to `Skills:` (e.g. `doubt-driven-development` for `high`/`critical`).
 
@@ -84,7 +86,7 @@ Iterate until approved. (`/work` treats this approval as its ticket gate.)
 Publish in dependency order (blockers first) so `Blocked by` can reference real ids.
 
 - **Local** — write `.tickets/<effort-slug>/milestones.md` and one file per ticket `.tickets/<effort-slug>/issues/NN-<slug>.md` using the templates in `tickets.md`. New tickets get `Status: ready` and `Source: to-tickets` (append mode: the caller's source). Make sure `.tickets/` is in `.gitignore`.
-- **GitHub / GitLab** — one issue per ticket via the commands in `docs/agents/issue-tracker.md`: native milestone for `Milestone`, labels for `status:*` / `type:*` / `severity:*`, native blocking links where available (else a `Blocked by:` line), and the `Skills:` / `Source:` lines at the top of the body. Don't close or modify a parent issue.
+- **GitHub / GitLab** — one issue per ticket via the commands in `docs/agents/issue-tracker.md`: native milestone for `Milestone`, labels for `status:*` / `type:*` / `severity:*`, native blocking links where available (else a `Blocked by:` line), the `Skills:` / `Source:` lines at the top of the body, and a `## Parent` section linking the spec issue. Don't close or modify a parent issue.
 
 Avoid file paths and code snippets in tickets — they go stale. Exception: a prototype snippet that encodes a decision (state machine, schema, type shape) — inline the decision-rich part and say it came from a prototype.
 
@@ -100,6 +102,7 @@ Report: effort slug, milestones with ticket counts, the current frontier. Next s
 - A milestone nobody could demo.
 - Writing tickets from another skill without going through this procedure.
 - Renumbering, deleting or overwriting existing tickets.
+- Rewriting `milestones.md` in append mode instead of appending to one `Tickets:` line.
 
 ## Common rationalizations
 

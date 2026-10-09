@@ -9,6 +9,10 @@ A discipline for finding and fixing the root cause instead of guessing. Skip pha
 
 When exploring the codebase, read `CONTEXT.md` (if present) for a mental model of the relevant modules, and check ADRs in `docs/adr/` for the area you're touching. Test/run/build commands come from `docs/agents/project.md`; if it's missing, discover them and suggest `/init`.
 
+## Under `/work` or another orchestrator
+
+When an orchestrator runs this skill **in its own context** (not inside a ticket subagent), stop after **Phases 1–3**: the red-capable loop command, the minimal repro and the ranked hypotheses. Hand them to the `/to-tickets` procedure in **append mode** as one `fix` ticket (`Source: debugging`, `Skills:` incl. `debugging` and `tdd`) with all three under its `## Notes`. Don't instrument, fix or commit — Phases 4–6 happen in the ticket subagent that implements that ticket, starting from the Notes. Standalone (user invoked it directly, or a ticket lists `debugging`) → run every phase as below.
+
 ## Stop the line
 
 When anything unexpected happens — failing test, broken build, wrong behaviour, error in a log:
@@ -34,7 +38,7 @@ First, localise roughly which layer fails (UI, API, DB, build tooling, external 
 1. **Failing test** at whatever seam reaches the bug — unit, integration, e2e (focused-test command from `docs/agents/project.md`).
 2. **Curl / HTTP script** against a running dev server.
 3. **CLI invocation** with a fixture input, diffing stdout against a known-good snapshot.
-4. **Headless browser script** (Playwright / Puppeteer / DevTools — see `browser-testing-with-devtools`) asserting on DOM/console/network.
+4. **Headless browser script** (Python Playwright via `webapp-testing`; DevTools via `browser-testing-with-devtools` when that MCP exists) asserting on DOM/console/network.
 5. **Replay a captured trace.** Save a real request / payload / event log to disk; replay it through the code path in isolation.
 6. **Throwaway harness.** A minimal subset of the system (one service, substituted deps) that exercises the bug path with one call.
 7. **Property / fuzz loop.** For "sometimes wrong output", run 1000 random inputs and look for the failure mode.

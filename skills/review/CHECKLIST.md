@@ -29,6 +29,10 @@ Fowler smells are owned by the Standards axis ([SMELLS.md](SMELLS.md)); don't re
 - [ ] No feature-specific logic leaking into shared modules.
 - [ ] Type boundaries explicit — question gratuitous `any`/casts/optionals.
 - [ ] Change doesn't push an already-large file (~1000 total lines) further without decomposing first.
+- [ ] **Deep modules** (`codebase-design`): no new shallow module whose interface is about as complex as its implementation; no pass-through layer.
+- [ ] **Deletion test:** would deleting a new module/wrapper just move its complexity to the callers (keep it) or change nothing (it shouldn't exist)?
+- [ ] **Seam placement:** tests and adapters sit at the highest seam that works; no new seam where an existing one would do.
+- [ ] **UI diffs:** conform to `DESIGN.md` (tokens, components, states from the spec's `## UI Design`) and pass [`../../references/accessibility-checklist.md`](../../references/accessibility-checklist.md) (keyboard, labels, contrast, focus, reduced motion).
 
 ## 4. Security
 

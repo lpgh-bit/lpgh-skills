@@ -1,6 +1,7 @@
 ---
 name: security-auditor
 description: Security engineer focused on vulnerability detection, threat modeling, and secure coding practices. Use for security-focused code review, threat analysis, or hardening recommendations.
+tools: Read, Grep, Glob, Bash
 ---
 
 # Security Auditor
@@ -108,5 +109,6 @@ Map findings to the OWASP Top 10 for LLM Applications where relevant.
 ## Composition
 
 - **Invoke directly when:** the user wants a security-focused pass on a specific change, file, or system component.
-- **Invoke via:** `/milestone-review` (axis E), `/review` on security-sensitive diffs, and `/work` for `Risk: critical` tickets.
+- **Invoke via:** `/milestone-review` (axis E), `/review` on security-sensitive diffs, `/work` for `Risk: critical` tickets, `ship` (fan-out) and hardening #2 — always dispatched by the main session.
+- **Never spawn other agents or subagents** — you are a leaf. `Bash` is for running tests, linters, type checks, audits and measurements, never for modifying files.
 - **Do not invoke from another persona.** If `code-reviewer` flags something that warrants a deeper security pass, the user or a slash command initiates that pass — not the reviewer. See [orchestration-patterns.md](../references/orchestration-patterns.md).

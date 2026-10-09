@@ -1,13 +1,13 @@
 # Design phase — working out the UI together with the user
 
-Used by `/work` (design gate, after the spec) and whenever UI work arrives that the existing design doesn't cover. The user decides; you propose, show, and record.
+Used by `/work` (design gate, after the spec, on the feature branch `/work` created before this phase) and — outside `/work` — whenever UI work arrives that the existing design doesn't cover, at any risk level. The user decides; you propose, show, and record.
 
 ## 0. When it runs, when it doesn't
 
 | Situation | Do |
 |---|---|
 | `DESIGN.md` / the project's design system already covers the screens and components | No phase. Build by it. |
-| New screen, new component type, new flow, or a redesign not covered | Run the phase. |
+| New screen, new component type, new flow, or a redesign not covered — inside or outside `/work`, whatever the ticket's `Risk` | Run the phase. |
 | Inside a ticket subagent (no user reachable) | **Never ask.** Follow `DESIGN.md` + the spec's `## UI Design`. Anything uncovered: take the closest existing pattern, record it under the ticket's `## Decisions`, and note an idea in `ideas.md` for the user. |
 
 ## 1. Inventory what exists (reuse first)
@@ -31,15 +31,23 @@ Present it and ask, grill-style, one decision at a time with your recommendation
 
 ## 3. Show it for real when it matters
 
-When the screen is new, the change is large, or the user is unsure between options: build **2–4 radically different variants** in the real app with the `prototype` skill's UI mode (`../prototype/UI.md` — same route, `?variant=`, floating switcher), using real data and the surrounding chrome. Screenshot each variant if the harness can and show them; tell the user the URL to flip through them.
+When the screen is new, the change is large, or the user is unsure between options: **dispatch a variant-builder subagent** (the main session stays lean and keeps talking to the user). Give it the direction, the screens, the spec path, `docs/agents/project.md` and the effort slug. It:
 
-The user picks one, or combines parts ("layout of B, palette of A"). Iterate until they say yes. Variants are throwaway: delete the prototype code once the decision is recorded.
+1. starts the dev server with the run command from `docs/agents/project.md`;
+2. builds **2–4 radically different variants** in the real app with the `prototype` skill's UI mode ([`../prototype/UI.md`](../prototype/UI.md) — same route, `?variant=`, floating switcher; its design-phase override applies), using real data and the surrounding chrome;
+3. screenshots each variant with `webapp-testing` (desktop and mobile width) to `.tickets/<effort>/design/<screen>-<variant>.png`;
+4. returns the URL to flip through the variants, the screenshot paths, and the files it touched. It never asks the user anything.
+
+Show the screenshots and the URL. The user picks one, or combines parts ("layout of B, palette of A"); for another round, send the feedback to the same subagent. Iterate until the user says yes.
+
+Variants are throwaway: once the decision is recorded, **delete the variant code** (the subagent or you, using its list of touched files) and stop the dev server. Nothing is folded into production — the chosen design is built through tickets with `tdd`. Keep the screenshots.
 
 ## 4. Record
 
 - **`DESIGN.md`** at the repo root (committed) — the design system. Create it from the template below if missing; otherwise **extend** it (never silently change existing tokens — a change to an existing token is its own decision with the user, and existing screens may need tickets).
-- **Spec `## UI Design`** (in `.tickets/<effort>/spec.md`) — screen-specific decisions: chosen variant and why, ASCII wireframes, per-screen states, copy decisions, which `DESIGN.md` parts apply.
-- Mark the spec's UI design `approved` (`UI design: approved` line in that section). That is the design gate.
+- **Spec `## UI Design`** (in `.tickets/<effort>/spec.md`) — screen-specific decisions: chosen variant and why, links to the chosen screenshots (`design/<screen>-<variant>.png`), ASCII wireframes, per-screen states, copy decisions, which `DESIGN.md` parts apply.
+- **Never set `UI design: approved` yourself.** Present the recorded result and ask for the user's OK; `/work` sets it, or you set it only after the user's explicit OK in this conversation. That is the design gate.
+- **Commit `DESIGN.md`** at the design gate, after the user's OK, on the feature branch (outside `/work`: the current branch), per [`../../references/commits.md`](../../references/commits.md): `+ Add design system` when it was created, `~ Extend design system` when it was extended. `.tickets/` (spec, screenshots) is not committed.
 
 ## DESIGN.md template
 

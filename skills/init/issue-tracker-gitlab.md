@@ -58,6 +58,7 @@ Ticket fields from `references/tickets.md` map onto this tracker like this:
 | `Milestone` | native milestone named `<effort> M1 — <name>`: `glab issue create --milestone "<M1 name>"` (create once via `glab api projects/:id/milestones -f title=...`) |
 | `Blocked by` | native blocking links (see Wayfinding operations), else a `Blocked by: #n, #n` line |
 | `Skills`, `Source` | first lines of the issue body: `Skills: ...` / `Source: ...` |
+| Parent | every ticket body starts with a `## Parent` section linking the effort's spec issue (`#<spec>`) — the spec is the parent; additionally add a "relates to" link to the spec issue (`glab issue note <n> --message "/relate #<spec>"`) where available. Wayfinder child tickets link the map issue instead. Never close or modify the parent from a ticket. |
 | Effort | label `effort:<slug>`; the spec is an issue labelled `spec` + `effort:<slug>` |
 | `milestones.md` | the native milestone descriptions (goal, acceptance, user-level test) |
 

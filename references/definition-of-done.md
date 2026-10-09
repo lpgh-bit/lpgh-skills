@@ -52,8 +52,9 @@ The depth behind these items lives in `review` (the five-axis review) and `code-
 
 ## How to Apply
 
-- **Per task**: confirm the Correctness and Quality sections before checking the task off.
-- **Per feature**: confirm Integration and Documentation before considering the feature complete.
+- **Per task (ticket)**: confirm the Correctness and Quality sections before checking the task off — `implement` does this before a ticket is `done`.
+- **Per feature (milestone)**: confirm Integration and Documentation before considering the feature complete — `milestone-review` axis A (Spec & coherence) checks them across the milestone's tickets.
+- **With the hardening suite on** (`hardening.md`): item #11 checks every section of this file, incl. per-feature Integration and Documentation; any unchecked item blocks.
 - **Per release**: the full checklist is the floor; `ship` adds the deploy-specific gates on top.
 
 Tailor the list to the project once, then reuse it unchanged. A Definition of Done that is renegotiated every sprint is not a Definition of Done.

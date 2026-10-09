@@ -30,10 +30,17 @@ Rules:
 - Improvements you notice outside this ticket: note them in the effort's ideas.md (see tickets.md "Note idea"), don't do them.
 - Commits follow <plugin>/references/commits.md: your git identity is the user's — no Co-Authored-By or
   any AI attribution; subject `+`/`-`/`~` + imperative summary; `Ticket: <effort>#NN` as last body line.
-- Never push, merge, rebase or switch branches. Never commit `.tickets/`.
+- Never push, merge, rebase or switch branches. A throwaway branch (prototype/research) only via
+  `git worktree add` in a separate directory. Never commit `.tickets/`.
+- Never ask the user — you can't reach them. An open question about intent: record it in the ticket's
+  Comments as `NEEDS DECISION: ...`, revert, return FAILED with that line.
+- You can't dispatch subagents or agents. Reviews and audits are run by the orchestrator.
+- Browser/user-level tests for web UIs: the `webapp-testing` skill (headless Playwright, starts/stops the
+  server itself); screenshots to `.tickets/<effort>/design/` when the ticket asks for them.
 - If you cannot finish after an honest attempt: revert your uncommitted changes, write the failure
   report into the ticket's Comments as implement/SKILL.md describes, and return.
-<fix round only:> - Fix exactly these review findings in the working tree, re-verify, don't commit:
+<fix round only:> - FIX ROUND: the ticket is `in-review` with uncommitted changes from the first attempt —
+  don't re-claim or reset it. Fix exactly these review findings in the working tree, re-verify, don't commit:
   <findings>
 <retry only:> - A previous attempt failed. Its report is in the ticket's Comments. Load the `debugging`
   skill first and do not repeat the failed approach.

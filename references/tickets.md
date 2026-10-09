@@ -51,6 +51,8 @@ any ─► wontfix                                       (out of scope, already 
     milestones.md               # from /to-tickets
     map.md                      # only for /wayfinder efforts
     ideas.md                    # improvement suggestions, not tickets (see below)
+    handoff.md                  # only if a session handed off before the spec
+    design/                     # design-phase screenshots
     issues/
       01-<slug>.md
       02-<slug>.md
@@ -70,7 +72,7 @@ Status: ready
 Type: feature
 Risk: medium
 Milestone: M1
-Skills: tdd, frontend-ui-engineering
+Skills: tdd, frontend-design, frontend-ui-engineering, webapp-testing
 Blocked by: 01
 Severity: -
 Source: to-tickets
@@ -114,7 +116,27 @@ Status: open            # open | in-review | passed
 
 ### spec.md
 
-Written by `/to-spec`; its template lives in that skill. It carries a `Status: draft | approved` line — `approved` once the user passed gate 1, and only then may `/to-tickets` cut tickets from it.
+Written by `/to-spec`; its template lives in that skill. Header lines (fixed values, English):
+
+| Line | Values | Set by |
+|---|---|---|
+| `Status:` | `draft` · `approved` | `to-spec` writes `draft`; `/work` (or the user) sets `approved` after gate 1 |
+| `Scale:` | `small` · `medium` · `large` | `to-spec` proposes, confirmed at gate 1 — `large` turns on `hardening.md` for every milestone |
+| `UI design:` | `none` · `pending` · `covered` · `approved` | `none` = no UI; `pending` = design phase needed; `covered` = `DESIGN.md` already covers every screen; `approved` — **only after the user approved the design phase** (set by `/work` or on the user's explicit OK) |
+
+`/to-tickets` cuts tickets only from an `approved` spec whose `UI design` is `none`, `covered` or `approved`.
+
+### handoff.md
+
+When a session must hand off before the spec exists, `handoff` writes `.tickets/<effort>/handoff.md` (not a temp file). `/work` resume treats an effort folder with only `handoff.md` as "continue at the spec step, read the handoff first".
+
+### design/
+
+Screenshots of the design phase: `.tickets/<effort>/design/<screen>-<variant>.png` (chosen ones linked from the spec's `## UI Design`). Milestone review compares against them.
+
+## `.out-of-scope/` — committed
+
+Rejected ideas and deliberate "won't do" decisions are recorded once at the repo root in `.out-of-scope/<slug>.md` (format in `skills/triage/OUT-OF-SCOPE.md`) — committed, so they survive the gitignored `.tickets/`. `grill`, `to-spec`, `triage` and every skill proposing ideas read it first and don't re-propose what's there without new reasons.
 
 ### ideas.md — improvement backlog
 
@@ -126,13 +148,13 @@ Any skill or agent that notices an optimisation or improvement **outside its cur
 - [ ] I-01 <one-line suggestion> — why: <benefit> · cost: S|M|L · seen by: <skill>, <ticket or milestone> · status: new
 ```
 
-`status`: `new` → `shown` (presented to the user) → `accepted` (became ticket `<effort>#NN` via `to-tickets` append mode) | `rejected` (one-line reason). No effort yet → `.tickets/ideas.md`. On a real tracker: one issue per idea labelled `idea`.
+`status`: `new` → `shown` (presented to the user) → `accepted` (became ticket `<effort>#NN` via `to-tickets` append mode) | `rejected` (one-line reason; also recorded in `.out-of-scope/` when the user says it's a lasting no). No effort yet → `.tickets/ideas.md`. On a real tracker: one issue per idea labelled `idea`.
 
 ## Operations
 
 Every skill uses these names. The configured tracker file gives the concrete commands.
 
-- **Publish ticket(s)** — **only through the `/to-tickets` procedure** (`skills/to-tickets/SKILL.md`). Other skills never write ticket files or issues directly: they hand `/to-tickets` a list of items (title, what to build, acceptance, type, severity, milestone, blockers, source) in *append mode*. This keeps numbering, fields and the `Skills:` assignment consistent.
+- **Publish ticket(s)** — **only through the `/to-tickets` procedure** (append mode also adds new numbers to the milestone's `Tickets:` line in `milestones.md` — append only, never rewrite the file) (`skills/to-tickets/SKILL.md`). Other skills never write ticket files or issues directly: they hand `/to-tickets` a list of items (title, what to build, acceptance, type, severity, milestone, blockers, source) in *append mode*. This keeps numbering, fields and the `Skills:` assignment consistent.
 - **Publish spec** — `/to-spec` writes `spec.md` (local) or one issue labelled `spec`.
 - **Fetch** — read the ticket/spec/map file or issue, including comments.
 - **Frontier** — list the effort's tickets, keep `Status: ready` whose blockers are all `done`; optionally filter by `Milestone`. Lowest number first.

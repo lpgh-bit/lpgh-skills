@@ -1,9 +1,15 @@
 ---
 name: frontend-ui-engineering
-description: Builds production-quality, accessible, responsive user-facing UIs. Use when building or modifying interfaces and pages, creating components, implementing layouts, meeting WCAG accessibility requirements, managing state, or when the output needs to look and feel production-quality rather than AI-generated.
+description: Builds production-quality, accessible, responsive user-facing UIs. Use when building or modifying interfaces and pages, creating components, implementing layouts, meeting WCAG accessibility requirements, managing state, or when the output needs to look and feel production-quality rather than AI-generated. Always loaded together with frontend-design.
 ---
 
 # Frontend UI Engineering
+
+## In lpgh-skills
+
+- **Always load together with `frontend-design`.** This skill covers build quality — components, state, accessibility, responsiveness, loading/error states. Aesthetics (palette, type, layout direction, what reads as generic) come from `frontend-design`; UI not covered by `DESIGN.md` goes through its design phase.
+- **`DESIGN.md` and the project's design system win** over every example and default in this file (the Tailwind/React snippets are illustrations, not a stack choice).
+- **Verify** in a real browser with `webapp-testing` (headless, works in subagents; `browser-testing-with-devtools` when the chrome-devtools MCP is available interactively), and run the automated + manual pass in [`../../references/accessibility-checklist.md`](../../references/accessibility-checklist.md#automated--manual-pass).
 
 ## Overview
 
@@ -115,31 +121,9 @@ Global store (Zustand, Redux)    → Complex client state shared app-wide
 
 ## Design System Adherence
 
-### Reference-led UI quality
-
-When the product needs a distinct visual direction, collect evidence before choosing a layout:
-
-1. Search a trusted reference catalogue or use references supplied by the product team.
-2. Study two or three relevant screens. Record decisions about hierarchy, density, navigation, controls, responsive behavior, and interaction states.
-3. Turn those decisions into a short design contract before implementation. Name the screen's job, primary action, required states, responsive rules, and patterns to reject.
-4. Rebuild the useful structure in the product's own components, tokens, content, and visual language. Never copy another product's branding, proprietary text, imagery, or exact layout.
-
-Use references as evidence, not as templates. If references are unavailable, document the assumptions and verify the result against the product's existing design system.
-
 ### Avoid the AI Aesthetic
 
-AI-generated UI has recognizable patterns. Avoid all of them:
-
-| AI Default | Why It Is a Problem | Production Quality |
-|---|---|---|
-| Purple/indigo everything | Models default to visually "safe" palettes, making every app look identical | Use the project's actual color palette |
-| Excessive gradients | Gradients add visual noise and clash with most design systems | Flat or subtle gradients matching the design system |
-| Rounded everything (rounded-2xl) | Maximum rounding signals "friendly" but ignores the hierarchy of corner radii in real designs | Consistent border-radius from the design system |
-| Generic hero sections | Template-driven layout with no connection to the actual content or user need | Content-first layouts |
-| Lorem ipsum-style copy | Placeholder text hides layout problems that real content reveals (length, wrapping, overflow) | Realistic placeholder content |
-| Oversized padding everywhere | Equal generous padding destroys visual hierarchy and wastes screen space | Consistent spacing scale |
-| Stock card grids | Uniform grids are a layout shortcut that ignores information priority and scanning patterns | Purpose-driven layouts |
-| Shadow-heavy design | Layered shadows add depth that competes with content and slows rendering on low-end devices | Subtle or no shadows unless the design system specifies |
+Use `frontend-design`'s calibration list of generic defaults (its "Process" section) and `DESIGN.md` — not a separate list here. Concretely for build work: take colours, radii, shadows and spacing from the design system's tokens, use the real content instead of filler copy, and let information priority, not a stock card grid, decide the layout.
 
 ### Spacing and Layout
 
@@ -305,7 +289,7 @@ function useToggleTask() {
 
 ## See Also
 
-For detailed accessibility requirements and testing tools, see `../../references/accessibility-checklist.md`.
+For detailed accessibility requirements and the automated + manual pass, see `../../references/accessibility-checklist.md`. Aesthetics and the design phase: `../frontend-design/SKILL.md`. Browser verification: `../webapp-testing/SKILL.md`.
 
 ## Common Rationalizations
 
@@ -314,7 +298,7 @@ For detailed accessibility requirements and testing tools, see `../../references
 | "Accessibility is a nice-to-have" | It's a legal requirement in many jurisdictions and an engineering quality standard. |
 | "We'll make it responsive later" | Retrofitting responsive design is 3x harder than building it from the start. |
 | "The design isn't final, so I'll skip styling" | Use the design system defaults. Unstyled UI creates a broken first impression for reviewers. |
-| "This is just a prototype" | Prototypes become production code. Build the foundation right. |
+| "This is just a prototype" | Prototypes are throwaway (see `prototype`); production UI is built through tickets with `tdd`, never by promoting prototype code. |
 | "The AI aesthetic is fine for now" | It signals low quality. Use the project's actual design system from the start. |
 
 ## Red Flags
@@ -324,7 +308,7 @@ For detailed accessibility requirements and testing tools, see `../../references
 - Missing error states, loading states, or empty states
 - No keyboard navigation testing
 - Color as the sole indicator of state (red/green without text or icons)
-- Generic "AI look" (purple gradients, oversized cards, stock layouts)
+- Generic "AI look" — the defaults on `frontend-design`'s calibration list, or anything not from `DESIGN.md`
 
 ## Verification
 
@@ -336,5 +320,5 @@ After building UI:
 - [ ] Responsive: works at 320px, 768px, 1024px, 1440px
 - [ ] Loading, empty, error, success, and permission states handled when applicable
 - [ ] Follows the project's design system (spacing, colors, typography)
-- [ ] The rendered result passes a final UI-specific finish-gate review
-- [ ] No accessibility warnings in dev tools or axe-core
+- [ ] Screenshots (desktop + mobile) via `webapp-testing` match `DESIGN.md` and the spec's `## UI Design`; the full UI review happens in `milestone-review` (and the hardening suite when [`risk.md`](../../references/risk.md) switches it on)
+- [ ] No WCAG A/AA violations in an axe run via `webapp-testing`

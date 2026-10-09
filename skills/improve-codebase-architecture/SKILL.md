@@ -60,9 +60,11 @@ See [HTML-REPORT.md](HTML-REPORT.md) for the full HTML scaffold, diagram pattern
 
 Do NOT propose interfaces yet. After the file is written, ask the user: "Which of these would you like to explore?"
 
+Every candidate the user doesn't take now goes to `ideas.md` (**Note idea** in [`../../references/tickets.md`](../../references/tickets.md): the effort's `.tickets/<effort>/ideas.md`, else `.tickets/ideas.md`; `seen by: improve-codebase-architecture`) — one line each with the recommendation strength — so nothing found is lost. A candidate the user rejects as a lasting no goes to `.out-of-scope/` instead (or as an ADR, below). Read `.out-of-scope/` before presenting, and don't re-propose what's there without new reasons.
+
 ### 3. Grilling loop
 
-Once the user picks a candidate, run the `grill` procedure (read `../grill/SKILL.md` and follow it; it keeps `CONTEXT.md`/ADRs current via `domain-docs`) to walk the decision tree with them — constraints, dependencies, the shape of the deepened module, what sits behind the seam, what tests survive.
+Once the user picks a candidate, load the `grill` skill (model-invoked; it keeps `CONTEXT.md`/ADRs current via `domain-docs`) to walk the decision tree with them — constraints, dependencies, the shape of the deepened module, what sits behind the seam, what tests survive.
 
 Side effects happen inline as decisions crystallize — use the `domain-docs` skill to keep the domain model current as you go:
 
