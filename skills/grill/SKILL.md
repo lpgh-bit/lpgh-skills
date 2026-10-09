@@ -1,6 +1,6 @@
 ---
 name: grill
-description: Interviews the user relentlessly, one question at a time with a recommended answer each, until plan, design or idea reach a shared understanding — looking facts up instead of asking, leaving every decision to the user, and (in a codebase) recording glossary terms in CONTEXT.md and ADRs as decisions land. Can open with divergent variants when the idea is still rough, or with an intent check when the ask is underspecified. Use proactively whenever a request is ambiguous, underspecified or open to several reasonable interpretations (missing who/why/success/constraints, vague goals like "make it better", conflicting requirements) — before planning or building. Also when the user says "grill me", "stress-test this", "interview me", "refine this idea", "ideate", "are we sure?".
+description: Interviews the user relentlessly, one question at a time with a recommended answer each, until plan, design or idea reach a shared understanding — looking facts up instead of asking, leaving every decision to the user, and (in a codebase) recording glossary terms in CONTEXT.md and ADRs as decisions land. Can open with divergent variants when the idea is still rough, or with an intent check when the ask is underspecified. Use proactively whenever you are not 100% certain what the user wants — ambiguous, underspecified or open to more than one reasonable reading (missing who/why/success/constraints, vague goals like "make it better", conflicting requirements) — before planning or building, and keep going until nothing about their intent is left to guess. Also when the user says "grill me", "stress-test this", "interview me", "refine this idea", "ideate", "are we sure?".
 ---
 
 # Grill
@@ -37,7 +37,9 @@ Recommended: <your answer> — <why>
 
 Modes are openers, not separate sessions: once intent or direction is settled, continue grilling under the same rules.
 
-**Invoked on your own** (the request was unclear): say in one line what is unclear and that you'll ask a few questions first; ask only what blocks a correct start — stop grilling as soon as the remaining unknowns no longer change what you'd build, restate, get the yes, then go back to the original task (no forced `/to-spec` hand-off for small asks).
+**Invoked on your own** (you weren't 100% sure what the user wants): say in one line what is unclear and that you'll ask questions first. Then grill **until every decision about the user's intent is settled** — nothing left that you would otherwise have to guess. Small asks need fewer questions, never fewer than it takes to be certain. Restate, get the explicit yes, then go back to the original task (no forced `/to-spec` hand-off for small asks).
+
+**Never guess what the user wants.** Facts you can look up (code, docs, git, tools) you look up. Everything about the user's intent — goals, scope, behaviour, priorities, look and feel, trade-offs — is the user's decision. Unless you are 100% certain what they want, `grill` them, and keep going until no such decision is left open. An assumption about intent is a bug, not a shortcut.
 
 Don't use this skill for unambiguous mechanical asks (renames, typo fixes) or pure information requests. It needs a live user — in a non-interactive run (CI, scheduled loop, autonomous agent with no human), flag the open decisions as a blocker instead of answering them yourself.
 

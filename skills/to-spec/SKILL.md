@@ -7,7 +7,7 @@ hide: true
 
 # To Spec
 
-Synthesise what the conversation and the codebase already say into one spec. **Do not interview the user** — the grilling happened before (`/grill`, `/batch-grill`, or plain discussion). The only question you ask is the test-seam check in step 3, plus approval at the end.
+Synthesise what the conversation and the codebase already say into one spec. **Don't re-interview what is already settled** — the grilling happened before (`/grill`, `/batch-grill`, or plain discussion). You ask the test-seam check in step 3 and approval at the end; any intent gap you find while writing goes through `grill` first — never guess it.
 
 Read first: [`../../references/tickets.md`](../../references/tickets.md) — where the spec lives and how it is published.
 
@@ -37,8 +37,8 @@ Pick the effort slug (kebab-case, short, stable — it names the folder and pref
 
 Fill the template below. Rules:
 
-- **Surface assumptions, don't hide them.** Anything you filled in that wasn't explicitly agreed goes under **Assumptions** so the user can correct it at approval. Real unknowns go under **Open Questions** — never silently guessed.
-- **Reframe vague goals as testable success criteria** ("faster" → "dashboard LCP < 2.5 s on 4G"). Mark the numbers you invented as assumptions.
+- **No guessed intent.** If writing the spec reveals anything about the user's intent that wasn't explicitly agreed (behaviour, scope, priorities, numbers, edge cases), stop and `grill` those points first, one question at a time — then write. The spec only records what the user decided or what you verified in the code.
+- **Reframe vague goals as testable success criteria** ("faster" → "dashboard LCP < 2.5 s on 4G"). Thresholds come from the user (grill for them, with a recommended number) — never invent them.
 - **No file paths or code snippets** — they go stale. Exception: a prototype snippet that encodes a decision more precisely than prose (state machine, reducer, schema, type shape) — inline only the decision-rich part and say it came from a prototype.
 - Stack, commands, layout and code style belong in `docs/agents/project.md`, not the spec. Reference it; only record spec-specific deviations.
 - If the project already uses an external spec system (OpenSpec etc.), keep its format and location; this skill still owns the content and the approval gate.
@@ -54,7 +54,7 @@ Spec header starts `Status: draft`. Do not create tickets here.
 
 ### 6. Present and stop
 
-1. Summarise the spec in a few lines; list the **Assumptions** and **Open Questions**.
+1. Summarise the spec in a few lines. **Open Questions** must be empty and **Assumptions** may only hold verified technical facts — anything else goes back through `grill` before you ask for approval.
 2. Ask the user to approve or request changes.
 3. **Stop.** Don't break it into tickets or write code in the same turn. On approval, set `Status: approved` (local) / comment "approved" (tracker).
 
@@ -131,11 +131,11 @@ What this spec deliberately does not cover.
 
 ## Assumptions
 
-What you filled in that wasn't explicitly agreed. → The user corrects these at approval.
+Technical facts the spec relies on, each verified in the code/docs (with where). No assumptions about user intent — those are grilled.
 
 ## Open Questions
 
-Unresolved points needing human input. Empty is fine.
+Must be empty before approval. If something is open, grill it first.
 
 ## Further Notes
 
@@ -159,5 +159,5 @@ The spec is the source of truth `/implement`, `/review` and `/milestone-review` 
 |---|---|
 | "This is simple, it doesn't need a spec" | Then the spec is short — it still needs success criteria and a user-level check. |
 | "Requirements will change anyway" | That's why the spec is updated, not skipped. |
-| "The user knows what they want" | Clear requests still carry implicit assumptions; the Assumptions section surfaces them. |
+| "The user knows what they want" | Clear requests still carry implicit decisions; grill them instead of writing them down as assumptions. |
 | "I'll split the capabilities during ticketing" | By then the oversized spec exists. Decide boundaries before writing. |

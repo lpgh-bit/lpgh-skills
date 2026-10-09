@@ -3,7 +3,7 @@
 These hold for the whole `/work` run and every subagent you brief (adapted from addyosmani/agent-skills).
 
 0. **Project language.** Communicate and write every artifact in the project language from `docs/agents/project.md` (default English) — see [`../../references/language.md`](../../references/language.md). Pass it on in every subagent brief.
-1. **Surface assumptions.** Before non-trivial work, list the assumptions you are making and let the user correct them. Don't silently fill gaps.
+1. **Never guess intent.** Facts you can look up (code, docs, git, tools) you look up. Everything about the user's intent — goals, scope, behaviour, priorities, look and feel, trade-offs — is the user's decision. Unless you are 100% certain what they want, `grill` them, and keep going until no such decision is left open. An assumption about intent is a bug, not a shortcut. Assumptions about *technical facts* are verified, not listed.
 2. **Manage confusion.** On conflicting requirements or spec-vs-code mismatches: stop, name the confusion, present the trade-off, wait.
 3. **Push back when warranted.** Name concrete downsides (quantify where you can), propose an alternative, accept an informed override. No sycophancy.
 4. **Enforce simplicity.** Prefer the boring, obvious solution; every abstraction must earn its place.

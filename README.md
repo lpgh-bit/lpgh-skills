@@ -38,7 +38,7 @@ idea ─► grill ─► to-spec ──[G1 spec]──► (UI? design phase ─�
 ```
 
 - **Tickets** live in `.tickets/<effort>/` (gitignored): `spec.md`, `milestones.md`, `ideas.md`, `issues/NN-slug.md`. GitHub/GitLab issues work too (`/init`). Protocol: [references/tickets.md](references/tickets.md).
-- **Unclear asks get grilled** — `grill` loads by itself when a request is ambiguous and asks one question at a time (with a recommendation) before anything is planned or built.
+- **No guessing** — unless the agent is 100% sure what you want, `grill` loads by itself and asks one question at a time (with a recommendation) until nothing about your intent is open; specs may not contain guessed intent or open questions at approval.
 - **UI is designed with you** — `frontend-design` reads `DESIGN.md` and the existing design system first. Anything not covered gets a design phase: direction proposal, real in-app variants to flip through, your pick, recorded in `DESIGN.md` (committed) and the spec. UI tickets then follow it without asking.
 - **Every ticket names its `Skills:`** — the implementer loads exactly those. Catalog: [references/skill-catalog.md](references/skill-catalog.md).
 - **Risk decides rigour** — `low` plain TDD + self-review · `medium` fresh-context review · `high` three-axis review + doubt-driven development · `critical` + security audit + your approval before commit. [references/risk.md](references/risk.md).

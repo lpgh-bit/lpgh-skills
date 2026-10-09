@@ -29,7 +29,7 @@ You are the **orchestrator**. You keep the big picture, the ticket state and the
 | a bug, crash, failing test, regression | `debugging` → fix ticket via `to-tickets` append mode → §5 for that ticket |
 | a pile of incoming issues | `triage` |
 | a huge foggy effort (more than a few sessions, many unknowns) | `wayfinder`; when its map clears, continue at §3 |
-| the request itself is unclear or ambiguous | `grill` first, then route the clarified request |
+| you are not 100% sure what the user wants | `grill` until nothing about their intent is open, then route the clarified request |
 | anything else / unsure | route with [ROUTING.md](ROUTING.md), tell the user which skill and why, run it |
 
 **Resume:** list `.tickets/*/` efforts (or tracker efforts) with open tickets. One → use it; several → ask which. Then derive the phase from state:

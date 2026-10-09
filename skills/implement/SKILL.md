@@ -14,7 +14,7 @@ Read first: [`../../references/tickets.md`](../../references/tickets.md) — fie
 ## 1. Fetch
 
 - **Ticket given** (`<effort>#NN`, a path, or a tracker id): Fetch the ticket including comments, the effort's `spec.md` (or spec issue), and the ticket's milestone entry in `milestones.md`. Earlier failure reports in `## Comments` are input — don't repeat the approach that failed.
-- **No ticket** (small change from the conversation): restate the change and its acceptance in two or three lines and if it's ambiguous, run `grill` until it's clear (only when a user is reachable — a ticket subagent records the ambiguity in the ticket and stops instead). If it's bigger than one ticket's worth (several seams, more than ~5 files, needs design decisions), stop and suggest `/to-spec` → `/to-tickets`.
+- **No ticket** (small change from the conversation): restate the change and its acceptance in two or three lines and unless you are 100% certain what the user wants, run `grill` until nothing about their intent is open (only when a user is reachable — a ticket subagent records the ambiguity in the ticket and stops instead). If it's bigger than one ticket's worth (several seams, more than ~5 files, needs design decisions), stop and suggest `/to-spec` → `/to-tickets`.
 
 Check the ticket is workable: `Status: ready` (or `claimed` by this run's caller), every `Blocked by` ticket `done`. If not, stop and say why.
 
